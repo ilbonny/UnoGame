@@ -57,6 +57,8 @@ namespace UnoGame.Services
                     player.Hand.Add(firstCard);
                     _game.DrawPile.Remove(firstCard);
                 }
+
+                player.Hand = player.Hand.OrderBy(x => x.Color).ToList();
             }
         }
 

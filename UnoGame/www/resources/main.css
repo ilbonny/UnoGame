@@ -71,12 +71,17 @@
 
 .cardDivContainerVertical {
     display: inline-block;
-    height: 80px
+    height: 70px
 }
 
 .cardDivContainerHorizontal {
     display: inline-block;
-    width: 80px
+    width: 70px
+}
+
+.cardDivContainerMiddle {
+    display: inline-block;
+    width: 50px
 }
 
 .cardVerticalRight {
@@ -85,5 +90,13 @@
     margin-left: 50px;
     transform: rotate(-90deg);
 }
+
+.cardMiddleHorizontal {
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 250px;
+    transform: rotate(-30deg);
+}
+
 
 

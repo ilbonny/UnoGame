@@ -18,8 +18,8 @@
             </div>
         </div>
 
-        <div v-if="game" id="middlediv" class="cardDivContainerHorizontal">
-            <div v-for="card in game.DiscardPile">
+        <div v-if="game" id="middlediv">
+            <div v-for="card in game.DiscardPile" class="cardDivContainerMiddle">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"></div>
             </div>
         </div>
@@ -57,20 +57,21 @@
             player1: {},
             player2: {},
             player3: {},
-            player4: {}
+            player4: {},
+            countDiscard : 1
         },
         created() {
             this.createCardDesk();
         },
         computed: {
-            
         },
         methods: {
-            setBgStylePlayer: function (num) {
-                return this.game.CurrentPlayer!=null && this.game.CurrentPlayer.Position === num
-                    ? 'background-color:green' : '';
+            setBgStylePlayer: function(num) {
+                return this.game.CurrentPlayer != null && this.game.CurrentPlayer.Position === num
+                    ? 'background-color:green'
+                    : '';
             },
-            createCardDesk: function () {
+            createCardDesk: function() {
                 axios.get("/api/game/start")
                     .then((e) => {
                         this.game = e.data;
@@ -80,10 +81,10 @@
                         console.log(e);
                     });
             },
-            selectCard: function (playerNum, card) {
+            selectCard: function(playerNum, card) {
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
-                axios.post("/api/game/playerturn", 
+                axios.post("/api/game/playerturn",
                         {
                             card: card,
                             num: playerNum
@@ -95,6 +96,11 @@
                     .catch(e => {
                         console.log(e);
                     });
+            },
+            setMiddleCard: function () {
+                this.countDiscard++;
+                var deg = -10 * this.countDiscard;
+                return "margin-top: 20px; margin-left: 250px; transform: rotate(-30" + deg + ");";
             },
             setPlayers() {
                 this.player1 = _.find(this.game.Players, function (x) {return x.Position === 1});

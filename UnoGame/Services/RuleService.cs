@@ -19,7 +19,8 @@ namespace UnoGame.Services
             _actions =
                 new Dictionary<CardValue, Action<PlayerTurn, Game>>
                 {
-                    {CardValue.Reverse, ReverseMatch}
+                    {CardValue.Reverse, ReverseMatch},
+                    {CardValue.Skip, SkipMatch}
                 };
         }
 
@@ -40,23 +41,40 @@ namespace UnoGame.Services
             if (turn.Card.Color != game.CurrentTurn.Card.Color && turn.Card.Value != game.CurrentTurn.Card.Value) return;
             
             RemoveToHandAndAddDiscard(turn, game);
-            SetCurrentPlayer(game);
+            SetCurrentPlayer(game, 1);
         }
 
         private static void ReverseMatch(PlayerTurn turn, Game game)
         {
-            if (turn.Card.Value != CardValue.Reverse || turn.Card.Color != game.CurrentTurn.Card.Color) return;
-            
-            RemoveToHandAndAddDiscard(turn, game);
+            if (turn.Card.Value != CardValue.Reverse) return;
 
-            game.Players.Reverse();
-            SetCurrentPlayer(game);
+            if (game.CurrentTurn.Card.Value == CardValue.Reverse || turn.Card.Color == game.CurrentTurn.Card.Color)
+            {
+                RemoveToHandAndAddDiscard(turn, game);
+
+                game.Players.Reverse();
+                SetCurrentPlayer(game, 1);
+            }
         }
 
-        private static void SetCurrentPlayer(Game game)
+        private static void SkipMatch(PlayerTurn turn, Game game)
+        {
+            if (turn.Card.Value != CardValue.Skip) return;
+
+            if (game.CurrentTurn.Card.Value == CardValue.Skip || turn.Card.Color == game.CurrentTurn.Card.Color)
+            {
+                RemoveToHandAndAddDiscard(turn, game);
+
+                game.Players.Reverse();
+                SetCurrentPlayer(game, 2);
+            }
+        }
+
+        private static void SetCurrentPlayer(Game game, int next)
         {
             var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
-            var indexPlayer = currentIndex + 1 > game.Players.Count-1 ? 0 : currentIndex + 1;
+            var move = currentIndex + next;
+            var indexPlayer = move > game.Players.Count-1 ? 0 + next - 1 : move;
 
             game.CurrentPlayer = game.Players[indexPlayer];
         }
