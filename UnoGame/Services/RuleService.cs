@@ -20,7 +20,9 @@ namespace UnoGame.Services
                 new Dictionary<CardValue, Action<PlayerTurn, Game>>
                 {
                     {CardValue.Reverse, ReverseMatch},
-                    {CardValue.Skip, SkipMatch}
+                    {CardValue.Skip, SkipMatch},
+                    {CardValue.DrawTwo, DrawTwoMatch },
+                    {CardValue.DrawFour, DrawFourMatch }
                 };
         }
 
@@ -64,10 +66,29 @@ namespace UnoGame.Services
             if (game.CurrentTurn.Card.Value == CardValue.Skip || turn.Card.Color == game.CurrentTurn.Card.Color)
             {
                 RemoveToHandAndAddDiscard(turn, game);
-
-                game.Players.Reverse();
                 SetCurrentPlayer(game, 2);
             }
+        }
+
+        private static void DrawTwoMatch(PlayerTurn turn, Game game)
+        {
+            if (turn.Card.Value != CardValue.DrawTwo) return;
+
+            if (game.CurrentTurn.Card.Value == CardValue.DrawTwo || turn.Card.Color == game.CurrentTurn.Card.Color)
+            {
+                AddCardToNextPlayer(game, 2);
+                RemoveToHandAndAddDiscard(turn, game);
+                SetCurrentPlayer(game, 2);
+            }
+        }
+
+        private static void DrawFourMatch(PlayerTurn turn, Game game)
+        {
+            if (turn.Card.Value != CardValue.DrawFour) return;
+            
+            AddCardToNextPlayer(game, 4);
+            RemoveToHandAndAddDiscard(turn, game);
+            SetCurrentPlayer(game, 2);
         }
 
         private static void SetCurrentPlayer(Game game, int next)
@@ -87,5 +108,18 @@ namespace UnoGame.Services
             game.DiscardPile.Add(cardHandPlayer);
             game.CurrentTurn.Card = cardHandPlayer;
         }
+
+        private static void AddCardToNextPlayer(Game game, int numCard)
+        {
+            var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
+            var indexPlayer = currentIndex +1 > game.Players.Count - 1 ? 0 : currentIndex + 1;
+
+            var player = game.Players[indexPlayer];
+            var cards = game.DrawPile.Take(numCard);
+
+            player.Hand.AddRange(cards);
+            game.DrawPile.RemoveRange(0,numCard);
+        }
+
     }
 }
