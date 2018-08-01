@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <div id="app">
+        <div v-if="player4" id="topdiv">
+            <div v-for="card in player4.Hand" class="cardDivContainerHorizontal">
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(4,card)"></div>
+            </div>
+        </div>
+        <div v-if="player3" id="leftdiv">
+            <div v-for="card in player3.Hand" class="cardDivContainerVertical">
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(3,card)"></div>
+            </div>
+        </div>
+
+        <div v-if="game" id="middlediv">
+            <div v-for="card in game.DiscardPile">
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]"></div>
+            </div>
+        </div>
+
+        <div v-if="player2" id="rightdiv">
+            <div v-for="card in player2.Hand" class="cardDivContainerVertical">
+                <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(2,card)"></div>
+            </div>
+        </div>
+        <div v-if="player1" id="bottomdiv">
+            <div v-for="card in player1.Hand" class="cardDivContainerHorizontal">
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(1,card)"></div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
+
+<link rel="stylesheet" type="text/css" href="resources/main.css">
+<link rel="stylesheet" type="text/css" href="resources/cards.css">
+<script src="vendor/moment.min.js"></script>
+<script src="vendor/vue.js"></script>
+<script src="vendor/vue-router.js"></script>
+<script src="vendor/axios.js"></script>
+<script src="vendor/jquery.min.js"></script>
+<script src="vendor/bootstrap.min.js"></script>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            game: {},
+            player1: {},
+            player2: {},
+            player3: {},
+            player4: {}
+        },
+        created() {
+            this.createCardDesk();
+        },
+        methods: {
+            createCardDesk: function () {
+                axios.get("/api/game/start")
+                    .then((e) => {
+                        this.game = e.data;
+                        this.player1 = this.game.Players[0];
+                        this.player2 = this.game.Players[1];
+                        this.player3 = this.game.Players[2];
+                        this.player4 = this.game.Players[3];
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            },
+            selectCard: function (playerNum, card) {
+
+                if (this.game.CurrentPlayer !== playerNum)
+                    return;
+
+                axios.post("/api/game/playerturn", 
+                        {
+                            card: card,
+                            num: playerNum
+                        })
+                    .then((e) => {
+                        
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            }
+        }
+    })
+</script>
+

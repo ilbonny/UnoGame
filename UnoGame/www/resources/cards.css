@@ -1,0 +1,366 @@
+﻿.Zero_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) 0 0;
+}
+
+.One_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -100px 0;
+}
+.Two_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -200px 0;
+}
+
+.Three_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -300px 0;
+}
+
+.Four_Red {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -399px 0;
+}
+
+.Five_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -499px 0;
+}
+
+.Six_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -599px 0;
+}
+
+.Seven_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -699px 0;
+}
+
+.Eight_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -799px 0;
+}
+
+.Nine_Red {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -898px 0;
+}
+
+.Skip_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -998px 0;
+}
+
+.Reverse_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1098px 0;
+}
+
+.DrawTwo_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1198px 0;
+}
+
+.Zero_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) 0 -150px;
+}
+
+.One_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -100px -150px;
+}
+
+.Two_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -200px -150px;
+}
+
+.Three_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -300px -150px;
+}
+
+.Four_Yellow {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -399px -150px;
+}
+
+.Five_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -499px -150px;
+}
+
+.Six_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -599px -150px;
+}
+
+.Seven_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -699px -150px;
+}
+
+.Eight_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -799px -150px;
+}
+
+.Nine_Yellow {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -898px -150px;
+}
+
+.Skip_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -998px -150px;
+}
+
+.Reverse_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1098px -150px;
+}
+
+.DrawTwo_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1198px -150px;
+}
+
+.Zero_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) 0 -299px;
+}
+
+.One_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -100px -299px;
+}
+
+.Two_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -200px -299px;
+}
+
+.Three_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -300px -299px;
+}
+
+.Four_Green {
+    width: 101px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -399px -299px;
+}
+
+.Five_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -499px -299px;
+}
+
+.Six_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -599px -299px;
+}
+
+.Seven_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -699px -299px;
+}
+
+.Eight_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -799px -299px;
+}
+
+.Nine_Green {
+    width: 101px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -898px -299px;
+}
+
+.Skip_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -998px -299px;
+}
+
+.Reverse_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -1098px -299px;
+}
+
+.DrawTwo_Green {
+    width: 100px;
+    height: 151px;
+    background: url(UNO_cards_deck.png) -1198px -299px;
+}
+
+.Zero_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) 0 -449px;
+}
+
+.One_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -100px -449px;
+}
+
+.Two_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -200px -449px;
+}
+
+.Three_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -300px -449px;
+}
+
+.Four_Blue {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -399px -449px;
+}
+
+.Five_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -499px -449px;
+}
+
+.Six_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -599px -449px;
+}
+
+.Seven_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -699px -449px;
+}
+
+.Eight_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -799px -449px;
+}
+
+.Nine_Blue {
+    width: 101px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -898px -449px;
+}
+
+.Skip_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -998px -449px;
+}
+
+.Reverse_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1098px -449px;
+}
+
+.DrawTwo_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1198px -449px;
+}
+
+.DrawFour_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -599px;
+}
+
+.DrawFour_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -599px;
+}
+
+.DrawFour_Green {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -599px;
+}
+
+.DrawFour_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -599px;
+}
+
+.Wild_Red {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -449px;
+}
+
+.Wild_Green {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -449px;
+}
+
+.Wild_Blue {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -449px;
+}
+
+.Wild_Yellow {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -1298px -449px;
+}
+
+
+
+.Cover {
+    width: 100px;
+    height: 150px;
+    background: url(UNO_cards_deck.png) -0px -748px;
+}
