@@ -28,8 +28,8 @@ namespace UnoGame.Controllers
         [HttpPost]
         public HttpResponseMessage PlayerTurnExecute(PlayerTurn playerTurn)
         {
-            _gameService.PlayerTurnExecute(playerTurn);
-            return Request.CreateResponse(HttpStatusCode.OK);
+            var game = _gameService.PlayerTurnExecute(playerTurn);
+            return Request.CreateResponse(HttpStatusCode.OK, game);
         }
     }
 }

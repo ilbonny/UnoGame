@@ -7,7 +7,8 @@ namespace UnoGame.Models
         public List<Player> Players { get; set; }
         public List<Card> DrawPile { get; set; }
         public List<Card> DiscardPile { get; set; }
-        public int CurrentPlayer { get; set; }
+        public PlayerTurn CurrentTurn { get; set; }
+        public Player CurrentPlayer { get; set; }
 
         public Game()
         {

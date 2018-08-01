@@ -96,6 +96,7 @@
     <Compile Include="Services\CardDeskService.cs" />
     <Compile Include="Services\GameService.cs" />
     <Compile Include="Services\PlayerService.cs" />
+    <Compile Include="Services\RuleService.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="HttpConfigurationEx.cs" />
   </ItemGroup>
@@ -115,6 +116,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="www\resources\UNO_cards_deck.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\vendor\lodash.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="www\vendor\axios.js">

@@ -20,6 +20,7 @@ namespace UnoGame
             container.Register<IGameService, GameService>(Reuse.Singleton);
             container.Register<ICardDeskService, CardDeskService>(Reuse.Singleton);
             container.Register<IPlayerService, PlayerService>(Reuse.Singleton);
+            container.Register<IRuleService, RuleService>(Reuse.Singleton);
 
             container.WithWebApi(config);
             return config;

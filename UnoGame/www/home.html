@@ -7,29 +7,29 @@
 </head>
 <body>
     <div id="app">
-        <div v-if="player4" id="topdiv">
-            <div v-for="card in player4.Hand" class="cardDivContainerHorizontal">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(4,card)"></div>
+        <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(4)">
+            <div v-for="card in player4.Hand" class="cardDivContainerVertical">
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(4,card)"></div>
             </div>
         </div>
-        <div v-if="player3" id="leftdiv">
-            <div v-for="card in player3.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(3,card)"></div>
+        <div v-if="player3" id="topdiv" v-bind:style="setBgStylePlayer(3)">
+            <div v-for="card in player3.Hand" class="cardDivContainerHorizontal">
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(3,card)"></div>
             </div>
         </div>
 
-        <div v-if="game" id="middlediv">
+        <div v-if="game" id="middlediv" class="cardDivContainerHorizontal">
             <div v-for="card in game.DiscardPile">
-                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]"></div>
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"></div>
             </div>
         </div>
 
-        <div v-if="player2" id="rightdiv">
+        <div v-if="player2" id="rightdiv" v-bind:style="setBgStylePlayer(2)">
             <div v-for="card in player2.Hand" class="cardDivContainerVertical">
                 <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(2,card)"></div>
             </div>
         </div>
-        <div v-if="player1" id="bottomdiv">
+        <div v-if="player1" id="bottomdiv" v-bind:style="setBgStylePlayer(1)">
             <div v-for="card in player1.Hand" class="cardDivContainerHorizontal">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(1,card)"></div>
             </div>
@@ -47,6 +47,7 @@
 <script src="vendor/axios.js"></script>
 <script src="vendor/jquery.min.js"></script>
 <script src="vendor/bootstrap.min.js"></script>
+<script src="vendor/lodash.js"></script>
 
 <script type="text/javascript">
     var app = new Vue({
@@ -61,36 +62,45 @@
         created() {
             this.createCardDesk();
         },
+        computed: {
+            
+        },
         methods: {
+            setBgStylePlayer: function (num) {
+                return this.game.CurrentPlayer!=null && this.game.CurrentPlayer.Position === num
+                    ? 'background-color:green' : '';
+            },
             createCardDesk: function () {
                 axios.get("/api/game/start")
                     .then((e) => {
                         this.game = e.data;
-                        this.player1 = this.game.Players[0];
-                        this.player2 = this.game.Players[1];
-                        this.player3 = this.game.Players[2];
-                        this.player4 = this.game.Players[3];
+                        this.setPlayers();
                     })
                     .catch(e => {
                         console.log(e);
                     });
             },
             selectCard: function (playerNum, card) {
-
-                if (this.game.CurrentPlayer !== playerNum)
+                if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
-
                 axios.post("/api/game/playerturn", 
                         {
                             card: card,
                             num: playerNum
                         })
                     .then((e) => {
-                        
+                        this.game = e.data;
+                        this.setPlayers();
                     })
                     .catch(e => {
                         console.log(e);
                     });
+            },
+            setPlayers() {
+                this.player1 = _.find(this.game.Players, function (x) {return x.Position === 1});
+                this.player2 = _.find(this.game.Players, function (x) { return x.Position === 2 });
+                this.player3 = _.find(this.game.Players, function (x) { return x.Position === 3 });
+                this.player4 = _.find(this.game.Players, function (x) { return x.Position === 4 });
             }
         }
     })

@@ -6,7 +6,7 @@ namespace UnoGame.Services
     public interface IGameService
     {
         Game Start();
-        void PlayerTurnExecute(PlayerTurn playerTurn);
+        Game PlayerTurnExecute(PlayerTurn turn);
     }
 
     public class GameService : IGameService
@@ -16,52 +16,65 @@ namespace UnoGame.Services
 
         private readonly ICardDeskService _cardDeskService;
         private readonly IPlayerService _playerService;
+        private readonly IRuleService _ruleService;
 
-        public GameService(ICardDeskService cardDeskService, IPlayerService playerService)
+        private Game _game;
+
+        public GameService(ICardDeskService cardDeskService, IPlayerService playerService, IRuleService ruleService)
         {
             _cardDeskService = cardDeskService;
             _playerService = playerService;
+            _ruleService = ruleService;
         }
 
         public Game Start()
         {
-            var game = new Game {Players = _playerService.Create(NumPlayer), CurrentPlayer = 1};
+            var players = _playerService.Create(NumPlayer);
+            _game = new Game {Players = players, CurrentPlayer = players.First() };
 
             var cards = _cardDeskService.Create();
-            game.DrawPile = _cardDeskService.Shuffle(cards);
+            _game.DrawPile = _cardDeskService.Shuffle(cards);
 
-            InitialCarsToPlayer(game);
-            AddFirstDiscardPile(game);
+            InitialCarsToPlayer();
+            AddFirstDiscardPile();
 
-            return game;
+            return _game;
+        }
+        
+        public Game PlayerTurnExecute(PlayerTurn turn)
+        {
+            _ruleService.Apply(turn, _game);
+            return _game;
         }
 
-        public void PlayerTurnExecute(PlayerTurn playerTurn)
+        private void InitialCarsToPlayer()
         {
-            
-        }
-
-        private static void InitialCarsToPlayer(Game game)
-        {
-            foreach (var player in game.Players)
+            foreach (var player in _game.Players)
             {
                 for (var i = 0; i < NumCard; i++)
                 {
-                    var firstCard = game.DrawPile.First();
+                    var firstCard = _game.DrawPile.First();
                     player.Hand.Add(firstCard);
-                    game.DrawPile.Remove(firstCard);
+                    _game.DrawPile.Remove(firstCard);
                 }
             }
         }
 
-        private static void AddFirstDiscardPile(Game game)
+        private void AddFirstDiscardPile()
         {
-            var find = game.DrawPile.FirstOrDefault(x => x.Value != CardValue.Reverse 
-                                                         && x.Value != CardValue.DrawFour
-                                                         && x.Value != CardValue.DrawTwo 
-                                                         && x.Value != CardValue.Wild);
-            game.DiscardPile.Add(find);
-            game.DrawPile.RemoveAt(0);
+            var find = _game.DrawPile.FirstOrDefault(x => x.Value != CardValue.Reverse
+                                                          && x.Value != CardValue.DrawFour
+                                                          && x.Value != CardValue.DrawTwo
+                                                          && x.Value != CardValue.Wild);
+            _game.DiscardPile.Add(find);
+            _game.DrawPile.RemoveAt(0);
+
+            _game.CurrentTurn = new PlayerTurn
+            {
+                Result = TurnResult.GameStart,
+                Card = _game.DiscardPile.First(),
+                DeclaredColor = _game.DiscardPile.First().Color
+            };
         }
     }
 }
