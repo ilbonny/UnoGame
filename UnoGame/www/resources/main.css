@@ -121,20 +121,65 @@
 /* modifiche */
 
 #middlediv {
-    margin-left: -60px;
+    margin-left: -100px;
     width: 0;
     border: none;
+    border: 5px solid #000;
+    width: 200px;
     background: none; 
 } 
 
 .cardDivContainerMiddle {
     position: absolute;
+    margin-left: 50px;
 }
 
 .cardDivContainerVertical, .cardDivContainerHorizontal, #deckdiv {
     cursor: pointer;
 }
 
-#topdiv, #leftdiv, #rightdiv, #bottomdiv {
+#topdiv, #leftdiv, #rightdiv, #bottomdiv, #cubediv {
     overflow: overlay;
+}
+
+#deckdiv {
+    top: 35%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -350px;
+    position: fixed;
+}
+
+#deckdiv img {
+    width: 150px;
+}
+
+#cubediv {
+    top: 38%;
+    left: 50%;
+    margin-top: -117px;
+    margin-left: 220px;
+    overflow: hidden;
+    width: 120px;
+    height: 120px;
+}
+
+#cubediv img {
+    width: 50px;
+}
+
+#bottomdiv {
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    margin-left: -200px;
+}
+
+#bottomdiv div{
+    position: relative;
+    margin-left: 20px;
+}
+
+#bottomdiv .cardDivContainerHorizontal{
+    position: absolute;
 }
