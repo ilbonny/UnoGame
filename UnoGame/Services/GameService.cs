@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using UnoGame.Models;
 
 namespace UnoGame.Services
@@ -85,6 +86,14 @@ namespace UnoGame.Services
             var card = _game.DrawPile.First();
 
             _game.CurrentPlayer.Hand.Add(card);
+
+            List<Card> list = new List<Card>();
+
+            foreach (var card1 in _game.CurrentPlayer.Hand.OrderBy(x => x.Color))
+                list.Add(card1);
+
+            _game.CurrentPlayer.Hand = list;
+
             _game.DrawPile.RemoveAt(0);
 
             _ruleService.SetCurrentPlayer(_game, 1);

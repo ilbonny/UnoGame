@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnoGame.Models;
 
 namespace UnoGame.Services
@@ -30,7 +31,7 @@ namespace UnoGame.Services
                 }
             }
 
-            return cards;
+            return cards.OrderBy(x => x.Color).ToList();
         }
 
         public List<Card> Shuffle(List<Card> cards)
