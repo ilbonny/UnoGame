@@ -60,7 +60,7 @@ namespace UnoGame.Services
                     _game.DrawPile.Remove(firstCard);
                 }
 
-                player.Hand = player.Hand.OrderBy(x => x.Color).ToList();
+                player.Hand = OrderTheCards(player.Hand);
             }
         }
 
@@ -75,9 +75,7 @@ namespace UnoGame.Services
 
             _game.CurrentTurn = new PlayerTurn
             {
-                Result = TurnResult.GameStart,
                 Card = _game.DiscardPile.First(),
-                DeclaredColor = _game.DiscardPile.First().Color
             };
         }
 
@@ -86,19 +84,18 @@ namespace UnoGame.Services
             var card = _game.DrawPile.First();
 
             _game.CurrentPlayer.Hand.Add(card);
-
-            List<Card> list = new List<Card>();
-
-            foreach (var card1 in _game.CurrentPlayer.Hand.OrderBy(x => x.Color))
-                list.Add(card1);
-
-            _game.CurrentPlayer.Hand = list;
+            _game.CurrentPlayer.Hand = OrderTheCards(_game.CurrentPlayer.Hand);
 
             _game.DrawPile.RemoveAt(0);
 
             _ruleService.SetCurrentPlayer(_game, 1);
 
             return _game;
+        }
+
+        public List<Card> OrderTheCards(List<Card> cards)
+        {
+            return cards.OrderBy(x => x.Color).ThenBy(x => x.Value).ToList();
         }
     }
 }

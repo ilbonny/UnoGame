@@ -155,18 +155,19 @@
                 }
             },
             setTransformCard(index, count) {
+                
                 index = index + 1; 
+
                 if (!isOdd(count)) {
                     count = count + 1;
                 }
+                
                 var middle = count / 2;
-                var left = index * 20 > 160 ? 160 : index * 20;
-                var leftMath = Math.abs(index - middle) * 10;
+                var startLeft = middle;
+                var left = index * 50 - startLeft*10;
+                var top = Math.abs(index - middle) * 5;
 
-
-                var top = leftMath > 40 ? leftMath + 15 : leftMath;
-
-                return "transform: rotate(" + (index - middle) * 20 + "deg); left:" + left + "px; top:" + top + "px";
+                return "transform: rotate(" + (index - middle) * 5 + "deg); left:" + left + "px; top:" + top + "px";
             }
         }
     });

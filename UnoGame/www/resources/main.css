@@ -169,10 +169,10 @@
 }
 
 #bottomdiv {
-    width: 400px;
-    height: 300px;
+    width: 700px;
+    height: 200px;
     overflow: hidden;
-    margin-left: -200px;
+    margin-left: -350px;
 }
 
 #bottomdiv div{

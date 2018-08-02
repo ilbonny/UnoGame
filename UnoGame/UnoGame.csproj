@@ -109,6 +109,7 @@
     <Content Include="www\home.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="www\resources\buttonUno.png" />
     <Content Include="www\resources\cubeblue.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
