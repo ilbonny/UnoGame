@@ -118,5 +118,23 @@
     position: fixed;
 }
 
+/* modifiche */
 
+#middlediv {
+    margin-left: -60px;
+    width: 0;
+    border: none;
+    background: none; 
+} 
 
+.cardDivContainerMiddle {
+    position: absolute;
+}
+
+.cardDivContainerVertical, .cardDivContainerHorizontal, #deckdiv {
+    cursor: pointer;
+}
+
+#topdiv, #leftdiv, #rightdiv, #bottomdiv {
+    overflow: overlay;
+}

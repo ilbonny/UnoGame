@@ -28,8 +28,8 @@
         </div>
 
         <div v-if="game" id="middlediv">
-            <div v-for="card in game.DiscardPile" class="cardDivContainerMiddle">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"></div>
+            <div v-for="(card,index) in game.DiscardPile" class="cardDivContainerMiddle">
+               <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setMiddleCard(index)"></div>
             </div>
         </div>
 
@@ -106,10 +106,9 @@
 
                 this.playerTurnExecute(playerNum, card);
             },
-            setMiddleCard: function () {
-                this.countDiscard++;
-                var deg = -10 * this.countDiscard;
-                return "margin-top: 20px; margin-left: 250px; transform: rotate(-30" + deg + ");";
+            setMiddleCard: function (index) {
+                var deg = (((index * 10) + index) * 10) % 360;
+                return "transform: rotate(" + deg + "deg);";
             },
             drawDeck : function() {
                 axios.get("/api/game/drawDeck")
