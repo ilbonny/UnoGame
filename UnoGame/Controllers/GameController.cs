@@ -18,7 +18,7 @@ namespace UnoGame.Controllers
 
         [Route("start")]
         [HttpGet]
-        public HttpResponseMessage CreateDesk()
+        public HttpResponseMessage CreateDeck()
         {
             var game = _gameService.Start();
             return Request.CreateResponse(HttpStatusCode.OK, game);
