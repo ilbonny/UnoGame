@@ -68,7 +68,9 @@
             player3: {},
             player4: {},
             countDiscard: 1,
-            showColorCube : false
+            showColorCube: false,
+            currentCard: {},
+            playerNum : 0
         },
         created() {
             this.createCardDesk();
@@ -95,18 +97,14 @@
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
 
-                axios.post("/api/game/playerturn",
-                        {
-                            card: card,
-                            num: playerNum
-                        })
-                    .then((e) => {
-                        this.game = e.data;
-                        this.setPlayers();
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+                if (card.Value === "Wild" || card.Value === "DrawFour") {
+                    this.showColorCube = true;
+                    this.playerNum = playerNum;
+                    this.currentCard = card;
+                    return;
+                }
+
+                this.playerTurnExecute(playerNum, card);
             },
             setMiddleCard: function () {
                 this.countDiscard++;
@@ -122,6 +120,25 @@
                     .catch(e => {
                         console.log(e);
                     });
+            },
+            playerTurnExecute: function (playerNum, card){
+                axios.post("/api/game/playerturn",
+                    {
+                        card: card,
+                        num: playerNum
+                    })
+                    .then((e) => {
+                        this.game = e.data;
+                        this.setPlayers();
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            },
+            selectColor: function(color) {
+                this.currentCard.Color = color;
+                this.playerTurnExecute(this.playerNum, this.currentCard);
+                this.showColorCube = false;
             },
             setPlayers() {
                 this.player1 = _.find(this.game.Players, function (x) {return x.Position === 1});

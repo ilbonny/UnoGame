@@ -23,7 +23,8 @@ namespace UnoGame.Services
                     {CardValue.Reverse, ReverseMatch},
                     {CardValue.Skip, SkipMatch},
                     {CardValue.DrawTwo, DrawTwoMatch },
-                    {CardValue.DrawFour, DrawFourMatch }
+                    {CardValue.DrawFour, DrawFourMatch },
+                    {CardValue.Wild, WildMatch }
                 };
         }
 
@@ -41,10 +42,12 @@ namespace UnoGame.Services
 
         private void NormalMatch(PlayerTurn turn, Game game)
         {
-            if (turn.Card.Color != game.CurrentTurn.Card.Color && turn.Card.Value != game.CurrentTurn.Card.Value) return;
-            
-            RemoveToHandAndAddDiscard(turn, game);
-            SetCurrentPlayer(game, 1);
+            if ((turn.Card.Color != game.CurrentTurn.Card.Color && turn.Card.Value == game.CurrentTurn.Card.Value)
+                || turn.Card.Color == game.CurrentTurn.Card.Color)
+            {
+                RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
+                SetCurrentPlayer(game, 1);
+            }
         }
 
         private void ReverseMatch(PlayerTurn turn, Game game)
@@ -53,7 +56,7 @@ namespace UnoGame.Services
 
             if (game.CurrentTurn.Card.Value == CardValue.Reverse || turn.Card.Color == game.CurrentTurn.Card.Color)
             {
-                RemoveToHandAndAddDiscard(turn, game);
+                RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
 
                 game.Players.Reverse();
                 SetCurrentPlayer(game, 1);
@@ -66,7 +69,7 @@ namespace UnoGame.Services
 
             if (game.CurrentTurn.Card.Value == CardValue.Skip || turn.Card.Color == game.CurrentTurn.Card.Color)
             {
-                RemoveToHandAndAddDiscard(turn, game);
+                RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
             }
         }
@@ -78,7 +81,7 @@ namespace UnoGame.Services
             if (game.CurrentTurn.Card.Value == CardValue.DrawTwo || turn.Card.Color == game.CurrentTurn.Card.Color)
             {
                 AddCardToNextPlayer(game, 2);
-                RemoveToHandAndAddDiscard(turn, game);
+                RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
             }
         }
@@ -88,8 +91,16 @@ namespace UnoGame.Services
             if (turn.Card.Value != CardValue.DrawFour) return;
             
             AddCardToNextPlayer(game, 4);
-            RemoveToHandAndAddDiscard(turn, game);
+            RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
             SetCurrentPlayer(game, 2);
+        }
+
+        private void WildMatch(PlayerTurn turn, Game game)
+        {
+            if (turn.Card.Value != CardValue.Wild) return;
+
+            RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
+            SetCurrentPlayer(game, 1);
         }
 
         public void SetCurrentPlayer(Game game, int next)
@@ -101,13 +112,13 @@ namespace UnoGame.Services
             game.CurrentPlayer = game.Players[indexPlayer];
         }
 
-        private void RemoveToHandAndAddDiscard(PlayerTurn turn, Game game)
+        private void RemoveToHandAndAddDiscard(PlayerTurn turn, Game game, Predicate<Card> predicate)
         {
-            var cardHandPlayer = game.CurrentPlayer.Hand.Find(x => x.Value == turn.Card.Value && x.Color == turn.Card.Color);
+            var cardHandPlayer = game.CurrentPlayer.Hand.Find(predicate);
             game.CurrentPlayer.Hand.Remove(cardHandPlayer);
 
             game.DiscardPile.Add(cardHandPlayer);
-            game.CurrentTurn.Card = cardHandPlayer;
+            game.CurrentTurn.Card = turn.Card;
         }
 
         private void AddCardToNextPlayer(Game game, int numCard)
@@ -120,6 +131,15 @@ namespace UnoGame.Services
 
             player.Hand.AddRange(cards);
             game.DrawPile.RemoveRange(0,numCard);
+        }
+
+        private Predicate<Card> PredicateFindCardValue(PlayerTurn turn)
+        {
+            return x => x.Value == turn.Card.Value;
+        }
+        private Predicate<Card> PredicateFindCardValueAndColor(PlayerTurn turn)
+        {
+            return x => x.Value == turn.Card.Value && x.Color == turn.Card.Color;
         }
 
     }
