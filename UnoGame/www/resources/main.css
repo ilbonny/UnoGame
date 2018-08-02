@@ -12,7 +12,7 @@
 
 #leftdiv {
     top: 50%;
-    left: 10%;
+    left: 20%;
     width: 200px;
     height: 700px;
     margin-top: -350px;
@@ -24,7 +24,7 @@
 
 #rightdiv {
     top: 50%;
-    right: 10%;
+    right: 20%;
     width: 200px;
     height: 700px;
     margin-top: -350px;
@@ -96,6 +96,26 @@
     margin-top: 20px;
     margin-left: 250px;
     transform: rotate(-30deg);
+}
+
+#deckdiv {
+    top: 10px;
+    left: 10px;
+    width: 300px;
+    height: 200px;
+    margin-top: 20px;
+    margin-left: 20px;
+    position: fixed;
+}
+
+#cubediv {
+    top: 230px;
+    left: 10px;
+    width: 300px;
+    height: 200px;
+    margin-top: 50px;
+    margin-left: 40px;
+    position: fixed;
 }
 
 

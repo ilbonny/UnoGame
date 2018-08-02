@@ -7,6 +7,15 @@
 </head>
 <body>
     <div id="app">
+        <div v-on:click="drawDeck()" id="deckdiv">
+            <img src="resources/deck.jpg"  />
+        </div>
+        <div v-show="showColorCube" id="cubediv">
+            <img src="resources/cubeblue.png" v-on:click="selectColor('blue')" />
+            <img src="resources/cubegreen.png" v-on:click="selectColor('green')"/>
+            <img src="resources/cubered.png" v-on:click="selectColor('red')"/>
+            <img src="resources/cubeyellow.png"  v-on:click="selectColor('yellow')"/>
+        </div>
         <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(4)">
             <div v-for="card in player4.Hand" class="cardDivContainerVertical">
                 <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(4,card)"></div>
@@ -58,13 +67,13 @@
             player2: {},
             player3: {},
             player4: {},
-            countDiscard : 1
+            countDiscard: 1,
+            showColorCube : false
         },
         created() {
             this.createCardDesk();
         },
-        computed: {
-        },
+        
         methods: {
             setBgStylePlayer: function(num) {
                 return this.game.CurrentPlayer != null && this.game.CurrentPlayer.Position === num
@@ -82,8 +91,10 @@
                     });
             },
             selectCard: function(playerNum, card) {
+
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
+
                 axios.post("/api/game/playerturn",
                         {
                             card: card,
@@ -101,6 +112,16 @@
                 this.countDiscard++;
                 var deg = -10 * this.countDiscard;
                 return "margin-top: 20px; margin-left: 250px; transform: rotate(-30" + deg + ");";
+            },
+            drawDeck : function() {
+                axios.get("/api/game/drawDeck")
+                    .then((e) => {
+                        this.game = e.data;
+                        this.setPlayers();
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
             },
             setPlayers() {
                 this.player1 = _.find(this.game.Players, function (x) {return x.Position === 1});

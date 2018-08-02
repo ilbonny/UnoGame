@@ -31,5 +31,13 @@ namespace UnoGame.Controllers
             var game = _gameService.PlayerTurnExecute(playerTurn);
             return Request.CreateResponse(HttpStatusCode.OK, game);
         }
+
+        [Route("drawDeck")]
+        [HttpGet]
+        public HttpResponseMessage DrawDeck()
+        {
+            var game = _gameService.DrawDeck();
+            return Request.CreateResponse(HttpStatusCode.OK, game);
+        }
     }
 }

@@ -8,6 +8,7 @@ namespace UnoGame.Services
     public interface IRuleService
     {
         void Apply(PlayerTurn turn, Game game);
+        void SetCurrentPlayer(Game game, int next);
     }
 
     public class RuleService : IRuleService
@@ -38,7 +39,7 @@ namespace UnoGame.Services
                 NormalMatch(turn, game);
         }
 
-        private static void NormalMatch(PlayerTurn turn, Game game)
+        private void NormalMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Color != game.CurrentTurn.Card.Color && turn.Card.Value != game.CurrentTurn.Card.Value) return;
             
@@ -46,7 +47,7 @@ namespace UnoGame.Services
             SetCurrentPlayer(game, 1);
         }
 
-        private static void ReverseMatch(PlayerTurn turn, Game game)
+        private void ReverseMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Value != CardValue.Reverse) return;
 
@@ -59,7 +60,7 @@ namespace UnoGame.Services
             }
         }
 
-        private static void SkipMatch(PlayerTurn turn, Game game)
+        private void SkipMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Value != CardValue.Skip) return;
 
@@ -70,7 +71,7 @@ namespace UnoGame.Services
             }
         }
 
-        private static void DrawTwoMatch(PlayerTurn turn, Game game)
+        private void DrawTwoMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Value != CardValue.DrawTwo) return;
 
@@ -82,7 +83,7 @@ namespace UnoGame.Services
             }
         }
 
-        private static void DrawFourMatch(PlayerTurn turn, Game game)
+        private void DrawFourMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Value != CardValue.DrawFour) return;
             
@@ -91,7 +92,7 @@ namespace UnoGame.Services
             SetCurrentPlayer(game, 2);
         }
 
-        private static void SetCurrentPlayer(Game game, int next)
+        public void SetCurrentPlayer(Game game, int next)
         {
             var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
             var move = currentIndex + next;
@@ -100,7 +101,7 @@ namespace UnoGame.Services
             game.CurrentPlayer = game.Players[indexPlayer];
         }
 
-        private static void RemoveToHandAndAddDiscard(PlayerTurn turn, Game game)
+        private void RemoveToHandAndAddDiscard(PlayerTurn turn, Game game)
         {
             var cardHandPlayer = game.CurrentPlayer.Hand.Find(x => x.Value == turn.Card.Value && x.Color == turn.Card.Color);
             game.CurrentPlayer.Hand.Remove(cardHandPlayer);
@@ -109,7 +110,7 @@ namespace UnoGame.Services
             game.CurrentTurn.Card = cardHandPlayer;
         }
 
-        private static void AddCardToNextPlayer(Game game, int numCard)
+        private void AddCardToNextPlayer(Game game, int numCard)
         {
             var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
             var indexPlayer = currentIndex +1 > game.Players.Count - 1 ? 0 : currentIndex + 1;

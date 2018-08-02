@@ -7,6 +7,7 @@ namespace UnoGame.Services
     {
         Game Start();
         Game PlayerTurnExecute(PlayerTurn turn);
+        Game DrawDeck();
     }
 
     public class GameService : IGameService
@@ -77,6 +78,18 @@ namespace UnoGame.Services
                 Card = _game.DiscardPile.First(),
                 DeclaredColor = _game.DiscardPile.First().Color
             };
+        }
+
+        public Game DrawDeck()
+        {
+            var card = _game.DrawPile.First();
+
+            _game.CurrentPlayer.Hand.Add(card);
+            _game.DrawPile.RemoveAt(0);
+
+            _ruleService.SetCurrentPlayer(_game, 1);
+
+            return _game;
         }
     }
 }
