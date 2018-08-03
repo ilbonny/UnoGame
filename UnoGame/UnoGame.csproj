@@ -137,6 +137,12 @@
     <Content Include="www\resources\cards.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="www\resources\time_arrows.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="www\resources\time_reverse_arrows.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="www\resources\UNO_cards_deck.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

@@ -151,7 +151,9 @@ namespace UnoGame.Services
         {
             var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
             var move = currentIndex + next;
-            var indexPlayer = move > game.Players.Count-1 ? 0 + next - 1 : move;
+            var count = game.Players.Count - 1;
+
+            var indexPlayer = move > count ? move-count-1 : move;
 
             game.CurrentPlayer = game.Players[indexPlayer];
         }

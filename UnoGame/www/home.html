@@ -37,6 +37,10 @@
             </div>
         </div>
 
+        <div id="arrowsdiv">
+            <img v-bind:src="arrowurl" />
+        </div>
+
         <div v-if="game" id="middlediv" v-bind:style="getCurrentColor()">
             <div v-for="(card,index) in game.DiscardPile" class="cardDivContainerMiddle">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setMiddleCard(index)"></div>
@@ -84,7 +88,8 @@
             showColorCube: false,
             currentCard: {},
             playerNum: 0,
-            showDisputeButtons: false
+            showDisputeButtons: false,
+            arrowurl: "resources/time_reverse_arrows.png"
         },
         created() {
             this.createCardDesk();
@@ -117,6 +122,11 @@
                     this.currentCard = card;
                     return;
                 }
+
+                if (card.Value == "Reverse")
+                    this.arrowurl = this.arrowurl === "resources/time_reverse_arrows.png"
+                        ? "resources/time_arrows.png"
+                        : "resources/time_reverse_arrows.png";
 
                 this.playerTurnExecute(playerNum, card, false);
             },
