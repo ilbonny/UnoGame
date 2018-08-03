@@ -40,6 +40,8 @@ namespace UnoGame.Services
             InitialCarsToPlayer();
             AddFirstDiscardPile();
 
+            _game.Message = MessageService.Show(MessageService.StartGame, _game.CurrentPlayer.Position.ToString());
+
             return _game;
         }
         
@@ -81,6 +83,14 @@ namespace UnoGame.Services
 
         public Game DrawDeck()
         {
+            var listDiscard = _game.DiscardPile.Skip(1).Take(_game.DiscardPile.Count-1);
+
+            if (_game.DrawPile.Count == 1)
+            {
+                _game.DrawPile.AddRange(listDiscard);
+                _game.DrawPile = _cardDeskService.Shuffle(_game.DrawPile);
+            }
+                
             var card = _game.DrawPile.First();
 
             _game.CurrentPlayer.Hand.Add(card);
@@ -89,7 +99,7 @@ namespace UnoGame.Services
             _game.DrawPile.RemoveAt(0);
 
             _ruleService.SetCurrentPlayer(_game, 1);
-
+            _game.Message = MessageService.Show(MessageService.DrawDeck, _game.CurrentPlayer.Position.ToString());
             return _game;
         }
 

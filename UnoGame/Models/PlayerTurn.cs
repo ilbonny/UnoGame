@@ -4,5 +4,6 @@
     {
         public int Num { get; set; }
         public Card Card { get; set; }
+        public bool IsChallenge { get; set; }
     }
 }

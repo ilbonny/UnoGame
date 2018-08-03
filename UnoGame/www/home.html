@@ -8,13 +8,23 @@
 <body>
     <div id="app">
         <div v-on:click="drawDeck()" id="deckdiv">
-            <img src="resources/deck.jpg"  />
+            <img src="resources/deck.jpg" />
         </div>
         <div v-show="showColorCube" id="cubediv">
             <img src="resources/cubeblue.png" v-on:click="selectColor('blue')" />
-            <img src="resources/cubegreen.png" v-on:click="selectColor('green')"/>
-            <img src="resources/cubered.png" v-on:click="selectColor('red')"/>
-            <img src="resources/cubeyellow.png"  v-on:click="selectColor('yellow')"/>
+            <img src="resources/cubegreen.png" v-on:click="selectColor('green')" />
+            <img src="resources/cubered.png" v-on:click="selectColor('red')" />
+            <img src="resources/cubeyellow.png" v-on:click="selectColor('yellow')" />
+        </div>
+        <div id="unobuttondiv">
+            <img src="resources/buttonUno.png" v-on:click="declareUno()" />
+        </div>
+        <div id="messagediv">
+            <p id="messagep">{{this.game.Message}}</p>
+        </div>
+        <div v-show="showDisputeButtons" id="disputeButtons">
+            <button type="button" class="btn btn-outline-primary" v-on:click="challengeDrawFour(true)">Yes</button>
+            <button type="button" class="btn btn-outline-secondary" v-on:click="challengeDrawFour(false)">No</button>
         </div>
         <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(4)">
             <div v-for="card in player4.Hand" class="cardDivContainerVertical">
@@ -52,6 +62,7 @@
 
 <link rel="stylesheet" type="text/css" href="resources/main.css">
 <link rel="stylesheet" type="text/css" href="resources/cards.css">
+<link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css">
 <script src="vendor/moment.min.js"></script>
 <script src="vendor/vue.js"></script>
 <script src="vendor/vue-router.js"></script>
@@ -72,7 +83,8 @@
             countDiscard: 1,
             showColorCube: false,
             currentCard: {},
-            playerNum: 0
+            playerNum: 0,
+            showDisputeButtons: false
         },
         created() {
             this.createCardDesk();
@@ -106,7 +118,7 @@
                     return;
                 }
 
-                this.playerTurnExecute(playerNum, card);
+                this.playerTurnExecute(playerNum, card, false);
             },
             setMiddleCard: function(index) {
                 var deg = (((index * 10) + index) * 10) % 360;
@@ -122,11 +134,12 @@
                         console.log(e);
                     });
             },
-            playerTurnExecute: function(playerNum, card) {
+            playerTurnExecute: function(playerNum, card, isChallenge) {
                 axios.post("/api/game/playerturn",
                     {
                         card: card,
-                        num: playerNum
+                        num: playerNum,
+                        isChallenge
                     })
                     .then((e) => {
                         this.game = e.data;
@@ -138,8 +151,13 @@
             },
             selectColor: function(color) {
                 this.currentCard.Color = color;
-                this.playerTurnExecute(this.playerNum, this.currentCard);
                 this.showColorCube = false;
+
+                if (this.currentCard.Value === "DrawFour") {
+                    this.game.Message = "Do you want to challenge ?";
+                    this.showDisputeButtons = true;
+                } else
+                    this.playerTurnExecute(this.playerNum, this.currentCard, false);
             },
             setPlayers() {
                 this.player1 = _.find(this.game.Players, function(x) { return x.Position === 1 });
@@ -148,11 +166,15 @@
                 this.player4 = _.find(this.game.Players, function(x) { return x.Position === 4 });
             },
             getCurrentColor() {
-                if (this.currentCard.Color != null) {
-                    return "border-color:" + this.currentCard.Color;
-                } else {
-                    return "border-color:" + this.game.DiscardPile[this.game.DiscardPile.length - 1].Color;
-                }
+
+                var color = this.currentCard.Color != null
+                    ? this.currentCard.Color
+                    : this.game.DiscardPile[this.game.DiscardPile.length - 1].Color;
+
+                var setcolor = AdjustColors(color);
+
+                return " border-color: " + setcolor;
+
             },
             setTransformCard(index, count) {
                 
@@ -168,12 +190,37 @@
                 var top = Math.abs(index - middle) * 5;
 
                 return "transform: rotate(" + (index - middle) * 5 + "deg); left:" + left + "px; top:" + top + "px";
+            },
+            challengeDrawFour: function (isChallenge) {
+                this.showDisputeButtons = false;
+                this.playerTurnExecute(this.playerNum, this.currentCard, isChallenge);
             }
         }
     });
 
     function isOdd(num) {
          return num % 2;
+    }
+
+    function AdjustColors(color) {
+        var setcolor = "";
+
+        switch (color.toLowerCase()) {
+        case "red":
+            setcolor = "#FF5555";
+            break;
+        case "yellow":
+            setcolor = "#FFAA00";
+            break;
+        case "green":
+            setcolor = "#55AA55";
+            break;
+        case "blue":
+            setcolor = "#5555FF";
+            break;
+        }
+
+        return setcolor;
     }
 </script>
 

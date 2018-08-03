@@ -39,5 +39,6 @@ namespace UnoGame.Controllers
             var game = _gameService.DrawDeck();
             return Request.CreateResponse(HttpStatusCode.OK, game);
         }
+
     }
 }

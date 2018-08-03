@@ -47,6 +47,7 @@ namespace UnoGame.Services
             {
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 1);
+                game.Message = MessageService.Show(MessageService.PlayPlayer, game.CurrentPlayer.Position.ToString());
             }
         }
 
@@ -60,6 +61,8 @@ namespace UnoGame.Services
 
                 game.Players.Reverse();
                 SetCurrentPlayer(game, 1);
+
+                game.Message = MessageService.Show(MessageService.Reverse, game.CurrentPlayer.Position.ToString());
             }
         }
 
@@ -71,6 +74,8 @@ namespace UnoGame.Services
             {
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
+
+                game.Message = MessageService.Show(MessageService.SkipTurn, game.CurrentPlayer.Position.ToString());
             }
         }
 
@@ -83,16 +88,53 @@ namespace UnoGame.Services
                 AddCardToNextPlayer(game, 2);
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
+
+                game.Message = MessageService.Show(MessageService.DrawTwo, game.CurrentPlayer.Position.ToString());
             }
         }
 
         private void DrawFourMatch(PlayerTurn turn, Game game)
         {
             if (turn.Card.Value != CardValue.DrawFour) return;
-            
-            AddCardToNextPlayer(game, 4);
+
+            if (turn.IsChallenge)
+                DrawFourChallenge(turn, game);
+            else
+            {
+                DrawFour(turn, game, 4, 2);
+                game.Message = MessageService.Show(MessageService.DrawFour, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+            }
+        }
+
+        private void DrawFourChallenge(PlayerTurn turn, Game game)
+        {
+            var find = game.CurrentPlayer.Hand.FirstOrDefault(x=> x.Color == game.DiscardPile.Last().Color);
+            if (find == null)
+            {
+                DrawFour(turn, game, 6, 2);
+                game.Message = MessageService.Show(MessageService.DrawFourFailed, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+            }
+            else
+            {
+                DrawFourSuccess(turn, game);
+                game.Message = MessageService.Show(MessageService.DrawFourSuccess, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+            }
+        }
+
+        private void DrawFour(PlayerTurn turn, Game game, int numCards, int nextPlayer)
+        {
+            AddCardToNextPlayer(game, numCards);
             RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
-            SetCurrentPlayer(game, 2);
+            SetCurrentPlayer(game, nextPlayer);
+        }
+
+        private void DrawFourSuccess(PlayerTurn turn, Game game)
+        {
+            var index = game.Players.IndexOf(game.CurrentPlayer);
+            AddCardsToPlayer(game, 4, index);
+
+            RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
+            SetCurrentPlayer(game, 1);
         }
 
         private void WildMatch(PlayerTurn turn, Game game)
@@ -101,6 +143,8 @@ namespace UnoGame.Services
 
             RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
             SetCurrentPlayer(game, 1);
+
+            game.Message = MessageService.Show(MessageService.Wild, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
         }
 
         public void SetCurrentPlayer(Game game, int next)
@@ -125,22 +169,26 @@ namespace UnoGame.Services
         {
             var currentIndex = game.Players.IndexOf(game.CurrentPlayer);
             var indexPlayer = currentIndex +1 > game.Players.Count - 1 ? 0 : currentIndex + 1;
+            AddCardsToPlayer(game, numCard, indexPlayer);
+        }
 
+        private void AddCardsToPlayer(Game game,  int numCard, int indexPlayer)
+        {
             var player = game.Players[indexPlayer];
             var cards = game.DrawPile.Take(numCard);
 
             player.Hand.AddRange(cards);
-            game.DrawPile.RemoveRange(0,numCard);
+            game.DrawPile.RemoveRange(0, numCard);
         }
 
-        private Predicate<Card> PredicateFindCardValue(PlayerTurn turn)
+        private static Predicate<Card> PredicateFindCardValue(PlayerTurn turn)
         {
             return x => x.Value == turn.Card.Value;
         }
-        private Predicate<Card> PredicateFindCardValueAndColor(PlayerTurn turn)
+
+        private static Predicate<Card> PredicateFindCardValueAndColor(PlayerTurn turn)
         {
             return x => x.Value == turn.Card.Value && x.Color == turn.Card.Color;
         }
-
     }
 }

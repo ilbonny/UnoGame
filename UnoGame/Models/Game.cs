@@ -9,6 +9,7 @@ namespace UnoGame.Models
         public List<Card> DiscardPile { get; set; }
         public PlayerTurn CurrentTurn { get; set; }
         public Player CurrentPlayer { get; set; }
+        public string Message { get; set; }
 
         public Game()
         {
