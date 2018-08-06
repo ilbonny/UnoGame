@@ -163,7 +163,7 @@ namespace UnoGame.Services
             var cardHandPlayer = game.CurrentPlayer.Hand.Find(predicate);
             game.CurrentPlayer.Hand.Remove(cardHandPlayer);
 
-            game.DiscardPile.Add(cardHandPlayer);
+            game.DiscardPile.Add(turn.Card);
             game.CurrentTurn.Card = turn.Card;
         }
 

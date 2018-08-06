@@ -52,8 +52,6 @@
     height: 200px;
     margin-top: -100px;
     margin-left: -350px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
     position: fixed;
 }
 
@@ -108,13 +106,9 @@
     position: fixed;
 }
 
-/* modifiche */
-
 #middlediv {
     margin-left: -100px;
     width: 0;
-    border: none;
-    border: 5px solid #000;
     width: 200px;
     background: none; 
 } 
@@ -213,7 +207,12 @@
 #arrowsdiv {
     top: 50%;
     left: 50%;
-    margin-top: -200px;
-    margin-left: -200px;
+    margin-top: -150px;
+    margin-left: -150px;
     position: fixed;
+}
+
+#arrowsimg {
+    width: 300px;
+    height: 300px;
 }

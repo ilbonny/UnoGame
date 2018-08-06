@@ -38,10 +38,10 @@
         </div>
 
         <div id="arrowsdiv">
-            <img v-bind:src="arrowurl" />
+            <img v-bind:src="arrowurl" id="arrowsimg" />
         </div>
 
-        <div v-if="game" id="middlediv" v-bind:style="getCurrentColor()">
+        <div v-if="game" id="middlediv">
             <div v-for="(card,index) in game.DiscardPile" class="cardDivContainerMiddle">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setMiddleCard(index)"></div>
             </div>
@@ -89,7 +89,8 @@
             currentCard: {},
             playerNum: 0,
             showDisputeButtons: false,
-            arrowurl: "resources/time_reverse_arrows.png"
+            arrowurl: "",
+            isReverse : false
         },
         created() {
             this.createCardDesk();
@@ -106,6 +107,8 @@
                     .then((e) => {
                         this.game = e.data;
                         this.setPlayers();
+                        this.isReverse = false;
+                        this.setArrowsCurrentColor();
                     })
                     .catch(e => {
                         console.log(e);
@@ -123,11 +126,7 @@
                     return;
                 }
 
-                if (card.Value == "Reverse")
-                    this.arrowurl = this.arrowurl === "resources/time_reverse_arrows.png"
-                        ? "resources/time_arrows.png"
-                        : "resources/time_reverse_arrows.png";
-
+                if (card.Value === "Reverse") this.isReverse = this.isReverse ? false : true;
                 this.playerTurnExecute(playerNum, card, false);
             },
             setMiddleCard: function(index) {
@@ -154,6 +153,7 @@
                     .then((e) => {
                         this.game = e.data;
                         this.setPlayers();
+                        this.setArrowsCurrentColor();
                     })
                     .catch(e => {
                         console.log(e);
@@ -175,16 +175,12 @@
                 this.player3 = _.find(this.game.Players, function(x) { return x.Position === 3 });
                 this.player4 = _.find(this.game.Players, function(x) { return x.Position === 4 });
             },
-            getCurrentColor() {
+            setArrowsCurrentColor() {
+                var card = this.game.DiscardPile[this.game.DiscardPile.length - 1];
 
-                var color = this.currentCard.Color != null
-                    ? this.currentCard.Color
-                    : this.game.DiscardPile[this.game.DiscardPile.length - 1].Color;
-
-                var setcolor = AdjustColors(color);
-
-                return " border-color: " + setcolor;
-
+                this.arrowurl = this.isReverse
+                    ? "resources/time_reverse_arrows_" + card.Color + ".png"
+                    : "resources/time_arrows_" + card.Color + ".png";
             },
             setTransformCard(index, count) {
                 
