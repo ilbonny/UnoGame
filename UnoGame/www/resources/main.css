@@ -216,3 +216,38 @@
     width: 300px;
     height: 300px;
 }
+
+@keyframes moveToCenter {
+    0%   {margin-top: 286px;}
+    100% {margin-top: 20px;}
+}
+
+
+.moveToCenter {
+    animation-name: moveToCenter;
+    animation-duration: 2s;
+}
+
+.rightRotation {
+    animation-name: rightRotate; 
+    animation-duration: 8s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+.leftRotation {
+    animation-name: leftRotate; 
+    animation-duration: 8s; 
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes rightRotate {
+    from {transform: rotate(0);}
+    to {transform: rotate(360deg);}
+}
+
+@keyframes leftRotate {
+    from {transform: rotate(360deg);}
+    to {transform: rotate(0);}
+}
