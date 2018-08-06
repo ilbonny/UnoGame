@@ -251,3 +251,19 @@
     from {transform: rotate(360deg);}
     to {transform: rotate(0);}
 }
+
+.cardDivContainerVertical {
+    margin-top: -35px;
+}
+
+.cardDivContainerVertical:first-child {
+    margin-top: 0px;
+}
+
+#topdiv .cardDivContainerHorizontal {
+    margin-left: -35px; 
+}
+
+#topdiv .cardDivContainerHorizontal:first-child {
+    margin-left: 0px; 
+}
