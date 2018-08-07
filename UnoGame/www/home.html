@@ -7,14 +7,47 @@
 </head>
 <body>
     <div id="app">
-       
-    </div>
+        <div class="container">
+            <div class="row" style="margin-bottom: 20px">
+                <h1>Uno Game</h1>
+            </div>
+            <div class="row" style="margin-bottom: 20px">
+                <div>
+                    <div class="form-group">
+                        <label>User Name</label>
+                        <input class="form-control" id="username" v-model="username">
+                    </div>
+                    <button type="submit" class="btn btn-primary" v-on:click="addPlayer()">Submit</button>
+                </div>
+            </div>
+            <div class="row" style="margin-bottom: 20px">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Player</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr v-for="player in players">
+                        <td>{{player.UserName}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div id="app">
+                <input type="text" v-model="name"></v-text-field>
+                <input type="text" v-model="message"></v-text-field>
+                <button @click="send()">Send</button>
+                <div v-for="(m, i) in messages" :key="i">
+                    {{m.name}}: {{m.message}}
+                </div>
+            </div>
 
+        </div>
+    </div>
 </body>
 </html>
 
-<link rel="stylesheet" type="text/css" href="resources/main.css">
-<link rel="stylesheet" type="text/css" href="resources/cards.css">
 <link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css">
 <script src="vendor/moment.min.js"></script>
 <script src="vendor/vue.js"></script>
@@ -23,19 +56,73 @@
 <script src="vendor/jquery.min.js"></script>
 <script src="vendor/bootstrap.min.js"></script>
 <script src="vendor/lodash.js"></script>
+<script src="vendor/jquery-1.6.4.min.js"></script>
+<script src="vendor/jquery.signalR-2.3.0.min.js"></script>
+<script src="http://localhost:9000/signalr/hubs"></script>
 
 <script type="text/javascript">
     var app = new Vue({
         el: '#app',
         data: {
-            
+            username: "",
+            players: [],
+            name: null,
+            message: null,
+            chat: null,
+            messages: [],
+            playerHub: {}
         },
         created() {
-            
+            this.getPlayers();
+
+            $.connection.hub.url = 'http://localhost:9000/signalr';
+            this.playerHub = $.connection.playerHub;
+
+            this.playerHub.client.updateUsers = function(users) {
+                this.players = users;
+            }
+
+            this.chat = $.connection.chatHub;
+
+            this.chat.client.broadcastMessage = function (name, message) {
+                this.broadcast(name, message);
+            }
+            this.chat.client.send = function (to, from, message) {
+                this.broadcast(from, message);
+            };
+
+            $.connection.hub.start();
         },
 
         methods: {
-            
+            getPlayers: function () {
+                axios.get("/api/users")
+                    .then((e) => {
+                        this.players = e.data;
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            },
+            addPlayer: function () {
+                axios.post("/api/users/add",
+                    {
+                        username: this.username
+                    })
+                    .then((e) => {
+                        this.playerHub.server.reloadUsers();
+                        this.chat.server.send(this.name, this.message);
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
+            },
+            send: function () {
+                this.chat.server.send(this.name, this.message);
+            },
+            broadcast: function (users) {
+                this.players = users;
+            }
         }
     });
 

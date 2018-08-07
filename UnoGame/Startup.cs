@@ -31,7 +31,7 @@ namespace UnoGame
 
             appBuilder.UseFileServer(fileServerOptions);
             appBuilder.UseWebApi(config);
-
+            appBuilder.MapSignalR();
         }
     }
 }
