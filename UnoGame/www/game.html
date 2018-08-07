@@ -38,7 +38,7 @@
         </div>
 
         <div id="arrowsdiv">
-            <img v-bind:src="arrowurl" id="arrowsimg" />
+            <img v-bind:src="arrowurl" v-bind:class="arrowRotation" id="arrowsimg" />
         </div>
 
         <div v-if="game" id="middlediv">
@@ -90,6 +90,7 @@
             playerNum: 0,
             showDisputeButtons: false,
             arrowurl: "",
+            arrowRotation: "",
             isReverse : false
         },
         created() {
@@ -129,9 +130,14 @@
                 if (card.Value === "Reverse") this.isReverse = this.isReverse ? false : true;
                 this.playerTurnExecute(playerNum, card, false);
             },
-            setMiddleCard: function(index) {
-                var deg = (((index * 10) + index) * 10) % 360;
-                return "transform: rotate(" + deg + "deg);";
+            setMiddleCard: function (index) {
+                if (index > 0) {
+                    var deg = (((index * 10) + index) * 10) % 360;
+
+                    return "transform: rotate(" +
+                            deg +
+                            "deg); animation-name: moveToCenter; animation-duration: 0.7s;";
+                }
             },
             drawDeck: function() {
                 axios.get("/api/game/drawDeck")
@@ -181,6 +187,9 @@
                 this.arrowurl = this.isReverse
                     ? "resources/time_reverse_arrows_" + card.Color + ".png"
                     : "resources/time_arrows_" + card.Color + ".png";
+
+                this.arrowRotation = this.isReverse ? "rightRotation" : "leftRotation";
+                
             },
             setTransformCard(index, count) {
 
