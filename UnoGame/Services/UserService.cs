@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UnoGame.Models;
 
 namespace UnoGame.Services
@@ -20,6 +21,7 @@ namespace UnoGame.Services
 
         public void Add(User  user)
         {
+            user.Id = Guid.NewGuid();
             Users.Add(user);
         }
     }

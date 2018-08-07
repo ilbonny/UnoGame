@@ -49,7 +49,7 @@
 <script src="vendor/lodash.js"></script>
 <script src="vendor/jquery-1.6.4.min.js"></script>
 <script src="vendor/jquery.signalR-2.3.0.min.js"></script>
-<script src="http://localhost:9000/signalr/hubs"></script>
+<script src="signalr/hubs"></script>
 
 <script type="text/javascript">
     var app = new Vue({
@@ -63,7 +63,6 @@
             this.getPlayers();
 
             var vm = this;
-            $.connection.hub.url = 'http://localhost:9000/signalr';
             this.playerHub = $.connection.playerHub;
 
             this.playerHub.client.updateUsers = function(users) {
@@ -90,7 +89,6 @@
                     })
                     .then((e) => {
                         this.playerHub.server.reloadUsers();
-                        this.chat.server.send(this.name, this.message);
                     })
                     .catch(e => {
                         console.log(e);
