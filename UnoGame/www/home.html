@@ -34,15 +34,6 @@
                     </tbody>
                 </table>
             </div>
-            <div id="app">
-                <input type="text" v-model="name"></v-text-field>
-                <input type="text" v-model="message"></v-text-field>
-                <button @click="send()">Send</button>
-                <div v-for="(m, i) in messages" :key="i">
-                    {{m.name}}: {{m.message}}
-                </div>
-            </div>
-
         </div>
     </div>
 </body>
@@ -66,30 +57,18 @@
         data: {
             username: "",
             players: [],
-            name: null,
-            message: null,
-            chat: null,
-            messages: [],
             playerHub: {}
         },
         created() {
             this.getPlayers();
 
+            var vm = this;
             $.connection.hub.url = 'http://localhost:9000/signalr';
             this.playerHub = $.connection.playerHub;
 
             this.playerHub.client.updateUsers = function(users) {
-                this.players = users;
+                vm.refreshPlayers(users);
             }
-
-            this.chat = $.connection.chatHub;
-
-            this.chat.client.broadcastMessage = function (name, message) {
-                this.broadcast(name, message);
-            }
-            this.chat.client.send = function (to, from, message) {
-                this.broadcast(from, message);
-            };
 
             $.connection.hub.start();
         },
@@ -120,7 +99,7 @@
             send: function () {
                 this.chat.server.send(this.name, this.message);
             },
-            broadcast: function (users) {
+            refreshPlayers: function (users) {
                 this.players = users;
             }
         }

@@ -38,6 +38,9 @@
     <Reference Include="DryIoc.Owin, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DryIoc.Owin.dll.3.0.0\lib\net45\DryIoc.Owin.dll</HintPath>
     </Reference>
+    <Reference Include="DryIoc.SignalR, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\DryIoc.SignalR.dll.3.0.0\lib\net45\DryIoc.SignalR.dll</HintPath>
+    </Reference>
     <Reference Include="DryIoc.WebApi, Version=3.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\DryIoc.WebApi.dll.3.0.0\lib\net45\DryIoc.WebApi.dll</HintPath>
     </Reference>

@@ -21,19 +21,4 @@ namespace UnoGame.Services
             Clients.All.updateUsers(_userService.Users);
         }
     }
-
-
-    public interface IChatHub
-    {
-        void Send(string to, string message);
-    }
-
-    public class ChatHub : Hub
-    {
-        public void Send(string to, string message)
-        {
-            // Call the broadcastMessage method to update clients.
-            Clients.All.broadcastMessage(to, message);
-        }
-    }
 }
