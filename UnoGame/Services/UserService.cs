@@ -7,7 +7,7 @@ namespace UnoGame.Services
     public interface IUserService
     {
         List<User> Users { get; set; }
-        void Add(User  user);
+        User Add(User  user);
     }
 
     public class UserService : IUserService
@@ -19,10 +19,11 @@ namespace UnoGame.Services
             Users = new List<User>();
         }
 
-        public void Add(User  user)
+        public User Add(User  user)
         {
             user.Id = Guid.NewGuid();
             Users.Add(user);
+            return user;
         }
     }
 }

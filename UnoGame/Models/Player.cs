@@ -4,6 +4,7 @@ namespace UnoGame.Models
 {
     public class Player
     {
+        public User User { get; set; }
         public List<Card> Hand { get; set; }
         public int Position { get; set; }
 

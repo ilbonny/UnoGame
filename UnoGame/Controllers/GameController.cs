@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System;
+using System.Net;
 using System.Net.Http;
 using System.Web.Http;
 using UnoGame.Models;
@@ -16,28 +17,20 @@ namespace UnoGame.Controllers
             _gameService = gameService;
         }
 
-        [Route("start")]
-        [HttpGet]
-        public HttpResponseMessage CreateDeck()
-        {
-            var game = _gameService.Start();
-            return Request.CreateResponse(HttpStatusCode.OK, game);
-        }
-
         [Route("playerturn")]
         [HttpPost]
         public HttpResponseMessage PlayerTurnExecute(PlayerTurn playerTurn)
         {
-            var game = _gameService.PlayerTurnExecute(playerTurn);
-            return Request.CreateResponse(HttpStatusCode.OK, game);
+            _gameService.PlayerTurnExecute(playerTurn);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
         [Route("drawDeck")]
         [HttpGet]
-        public HttpResponseMessage DrawDeck()
+        public HttpResponseMessage DrawDeck(Guid gameId)
         {
-            var game = _gameService.DrawDeck();
-            return Request.CreateResponse(HttpStatusCode.OK, game);
+            _gameService.DrawDeck(gameId);
+            return Request.CreateResponse(HttpStatusCode.OK);
         }
 
     }

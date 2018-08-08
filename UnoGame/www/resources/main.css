@@ -267,3 +267,8 @@
 #topdiv .cardDivContainerHorizontal:first-child {
     margin-left: 0px; 
 }
+
+.playerName {
+    color: black;
+    font-weight: bold;
+}

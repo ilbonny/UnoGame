@@ -1,15 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace UnoGame.Models
 {
     public class Game
     {
+        public Guid Id { get; set; }
         public List<Player> Players { get; set; }
         public List<Card> DrawPile { get; set; }
         public List<Card> DiscardPile { get; set; }
         public PlayerTurn CurrentTurn { get; set; }
         public Player CurrentPlayer { get; set; }
         public string Message { get; set; }
+        public bool IsReverse { get; set; }
 
         public Game()
         {

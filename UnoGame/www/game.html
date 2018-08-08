@@ -26,14 +26,14 @@
             <button type="button" class="btn btn-outline-primary" v-on:click="challengeDrawFour(true)">Yes</button>
             <button type="button" class="btn btn-outline-secondary" v-on:click="challengeDrawFour(false)">No</button>
         </div>
-        <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(4)">
+        <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(player4.Position)">
             <div v-for="card in player4.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(4,card)"></div>
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player4.Position,card)"></div>
             </div>
         </div>
-        <div v-if="player3" id="topdiv" v-bind:style="setBgStylePlayer(3)">
+        <div v-if="player3" id="topdiv" v-bind:style="setBgStylePlayer(player3.Position)">
             <div v-for="card in player3.Hand" class="cardDivContainerHorizontal">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(3,card)"></div>
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player3.Position,card)"></div>
             </div>
         </div>
 
@@ -47,16 +47,15 @@
             </div>
         </div>
 
-        <div v-if="player2" id="rightdiv" v-bind:style="setBgStylePlayer(2)">
+        <div v-if="player2" id="rightdiv" v-bind:style="setBgStylePlayer(player2.Position)">
             <div v-for="card in player2.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(2,card)"></div>
+                <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player2.Position,card)"></div>
             </div>
         </div>
-        <div v-if="player1" id="bottomdiv" v-bind:style="setBgStylePlayer(1)">
-            <div>
-                <div v-for="(card, index) in player1.Hand" class="cardDivContainerHorizontal">
-                    <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setTransformCard(index, player1.Hand.length)" v-on:click="selectCard(1,card)"></div>
-                </div>
+        <div v-if="player1" id="bottomdiv" v-bind:style="setBgStylePlayer(player1.Position)">
+            <div v-for="(card, index) in player1.Hand" class="cardDivContainerHorizontal">
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setTransformCard(index, player1.Hand.length)"
+                     v-on:click="selectCard(player1.Position,card)"></div>
             </div>
         </div>
     </div>
@@ -74,12 +73,17 @@
 <script src="vendor/jquery.min.js"></script>
 <script src="vendor/bootstrap.min.js"></script>
 <script src="vendor/lodash.js"></script>
+<script src="vendor/jquery-1.6.4.min.js"></script>
+<script src="vendor/jquery.signalR-2.3.0.min.js"></script>
+<script src="signalr/hubs"></script>
 
 <script type="text/javascript">
     var app = new Vue({
         el: '#app',
         data: {
             game: {},
+            gameId: '',
+            userId: '',
             player1: {},
             player2: {},
             player3: {},
@@ -91,31 +95,33 @@
             showDisputeButtons: false,
             arrowurl: "",
             arrowRotation: "",
-            isReverse : false
+            gameHub: {}
         },
         created() {
-            this.createCardDesk();
+
+            var params = new URLSearchParams(location.search);
+            this.gameId = params.get('game');
+            this.userId = params.get('player');
+
+            var vm = this;
+            this.gameHub = $.connection.gameHub;
+
+            this.gameHub.client.reloadGame = function (game) {
+                vm.reloadGame(game);
+            }
+
+            $.connection.hub.start().done(function () {
+                $.connection.gameHub.server.startGame(vm.gameId, vm.userId, $.connection.hub.id);
+            });
         },
 
         methods: {
-            setBgStylePlayer: function(num) {
+            setBgStylePlayer: function (num) {
                 return this.game.CurrentPlayer != null && this.game.CurrentPlayer.Position === num
                     ? 'background-color:green'
                     : '';
             },
-            createCardDesk: function() {
-                axios.get("/api/game/start")
-                    .then((e) => {
-                        this.game = e.data;
-                        this.setPlayers();
-                        this.isReverse = false;
-                        this.setArrowsCurrentColor();
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
-            },
-            selectCard: function(playerNum, card) {
+            selectCard: function (playerNum, card) {
 
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
@@ -127,7 +133,6 @@
                     return;
                 }
 
-                if (card.Value === "Reverse") this.isReverse = this.isReverse ? false : true;
                 this.playerTurnExecute(playerNum, card, false);
             },
             setMiddleCard: function (index) {
@@ -135,37 +140,36 @@
                     var deg = (((index * 10) + index) * 10) % 360;
 
                     return "transform: rotate(" +
-                            deg +
-                            "deg); animation-name: moveToCenter; animation-duration: 0.7s;";
+                        deg +
+                        "deg); animation-name: moveToCenter; animation-duration: 0.7s;";
                 }
             },
-            drawDeck: function() {
-                axios.get("/api/game/drawDeck")
+            drawDeck: function () {
+                axios.get("/api/game/drawDeck?gameId=" + this.gameId)
                     .then((e) => {
-                        this.game = e.data;
-                        this.setPlayers();
+                        this.gameHub.server.reloadGame(this.gameId);
                     })
                     .catch(e => {
                         console.log(e);
                     });
             },
-            playerTurnExecute: function(playerNum, card, isChallenge) {
+            playerTurnExecute: function (playerNum, card, isChallenge) {
                 axios.post("/api/game/playerturn",
                     {
                         card: card,
                         num: playerNum,
+                        gameId: this.gameId,
+                        userId: this.userId,
                         isChallenge
                     })
                     .then((e) => {
-                        this.game = e.data;
-                        this.setPlayers();
-                        this.setArrowsCurrentColor();
+                        this.gameHub.server.reloadGame(this.gameId);
                     })
                     .catch(e => {
                         console.log(e);
                     });
             },
-            selectColor: function(color) {
+            selectColor: function (color) {
                 this.currentCard.Color = color;
                 this.showColorCube = false;
 
@@ -176,20 +180,20 @@
                     this.playerTurnExecute(this.playerNum, this.currentCard, false);
             },
             setPlayers() {
-                this.player1 = _.find(this.game.Players, function(x) { return x.Position === 1 });
-                this.player2 = _.find(this.game.Players, function(x) { return x.Position === 2 });
-                this.player3 = _.find(this.game.Players, function(x) { return x.Position === 3 });
-                this.player4 = _.find(this.game.Players, function(x) { return x.Position === 4 });
+                this.player1 = this.game.Players[0];
+                this.player2 = this.game.Players[1];
+                this.player3 = this.game.Players[2];
+                this.player4 = this.game.Players[3];
             },
             setArrowsCurrentColor() {
                 var card = this.game.DiscardPile[this.game.DiscardPile.length - 1];
 
-                this.arrowurl = this.isReverse
+                this.arrowurl = this.game.IsReverse
                     ? "resources/time_reverse_arrows_" + card.Color + ".png"
                     : "resources/time_arrows_" + card.Color + ".png";
 
-                this.arrowRotation = this.isReverse ? "rightRotation" : "leftRotation";
-                
+                this.arrowRotation = this.game.IsReverse ? "rightRotation" : "leftRotation";
+
             },
             setTransformCard(index, count) {
 
@@ -201,7 +205,7 @@
 
                 var middle = count / 2;
                 var startLeft = middle;
-                var left = index * 50 - startLeft*10;
+                var left = index * 50 - startLeft * 10;
                 var top = Math.abs(index - middle) * 5;
 
                 return "transform: rotate(" + (index - middle) * 5 + "deg); left:" + left + "px; top:" + top + "px";
@@ -209,30 +213,35 @@
             challengeDrawFour: function (isChallenge) {
                 this.showDisputeButtons = false;
                 this.playerTurnExecute(this.playerNum, this.currentCard, isChallenge);
+            },
+            reloadGame: function (game) {
+                this.game = game;
+                this.setPlayers();
+                this.setArrowsCurrentColor();
             }
         }
     });
 
     function isOdd(num) {
-         return num % 2;
+        return num % 2;
     }
 
     function AdjustColors(color) {
         var setcolor = "";
 
         switch (color.toLowerCase()) {
-        case "red":
-            setcolor = "#FF5555";
-            break;
-        case "yellow":
-            setcolor = "#FFAA00";
-            break;
-        case "green":
-            setcolor = "#55AA55";
-            break;
-        case "blue":
-            setcolor = "#5555FF";
-            break;
+            case "red":
+                setcolor = "#FF5555";
+                break;
+            case "yellow":
+                setcolor = "#FFAA00";
+                break;
+            case "green":
+                setcolor = "#55AA55";
+                break;
+            case "blue":
+                setcolor = "#5555FF";
+                break;
         }
 
         return setcolor;

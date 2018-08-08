@@ -60,8 +60,9 @@ namespace UnoGame.Services
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
 
                 game.Players.Reverse();
-                SetCurrentPlayer(game, 1);
+                game.IsReverse = !game.IsReverse;
 
+                SetCurrentPlayer(game, 1);
                 game.Message = MessageService.Show(MessageService.Reverse, game.CurrentPlayer.Position.ToString());
             }
         }
