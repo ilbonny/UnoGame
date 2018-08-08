@@ -22,6 +22,8 @@ namespace UnoGame.Services
             {
                 foreach (CardValue val in Enum.GetValues(typeof(CardValue)))
                 {
+                    if (val == CardValue.Cover) continue;
+
                     cards.Add(new Card
                     {
                         Color = color,

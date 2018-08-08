@@ -25,5 +25,6 @@
         DrawTwo = 25,
         Wild = 40,
         DrawFour = 50,
+        Cover = 51,
     }
 }

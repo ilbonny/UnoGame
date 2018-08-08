@@ -139,19 +139,46 @@ namespace UnoGame.Services
             var player = game.Players.FirstOrDefault(x=>x.User.Id == userId);
             gameforUser.Players.Add(player);
 
-            var indexOf = game.Players.IndexOf(player);
-            for (var i = 1; i < game.Players.Count; i++)
+            var playersOrder = game.Players.OrderBy(x=>x.Position).ToList();
+            var indexOf = playersOrder.IndexOf(player);
+
+            for (var i = 1; i < playersOrder.Count; i++)
             {
                 var indexCurr = i + indexOf;
 
-                if (i + indexOf >= game.Players.Count)
-                    indexCurr = indexCurr - game.Players.Count;
+                if (i + indexOf >= playersOrder.Count)
+                    indexCurr = indexCurr - playersOrder.Count;
 
-                gameforUser.Players.Add(game.Players[indexCurr]);
+                var playerIndex = playersOrder[indexCurr];
+                gameforUser.Players.Add(AddPlayerWithCoverCards(playerIndex));
             }
 
-
             return gameforUser;
+        }
+
+        private static Player AddPlayerWithCoverCards(Player playerIndex)
+        {
+            var player = new Player
+            {
+                Position = playerIndex.Position,
+                User = playerIndex.User,
+                Hand = new List<Card>()
+            };
+
+            var countCards = playerIndex.Hand.Count;
+            
+            for (var j = 0; j < countCards; j++)
+            {
+                player.Hand.Add(new Card
+                {
+                    Value = CardValue.Cover,
+                    Color = CardColor.Yellow,
+                    Score = 0
+
+                });
+            }
+
+            return player;
         }
 
     }
