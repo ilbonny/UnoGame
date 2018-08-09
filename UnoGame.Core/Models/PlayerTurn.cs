@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UnoGame.Models
+namespace UnoGame.Core.Models
 {
     public class PlayerTurn
     {

@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Microsoft.AspNet.SignalR;
 
-namespace UnoGame.Services
+namespace UnoGame.Core.Services
 {
     public interface IPlayerHub
     {

@@ -1,8 +1,8 @@
 ﻿using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using UnoGame.Models;
-using UnoGame.Services;
+using UnoGame.Core.Models;
+using UnoGame.Core.Services;
 
 namespace UnoGame.Controllers
 {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using UnoGame.Models;
+using UnoGame.Core.Models;
 
-namespace UnoGame.Services
+namespace UnoGame.Core.Services
 {
     public interface IPlayerService
     {

@@ -1,4 +1,4 @@
-﻿namespace UnoGame.Services
+﻿namespace UnoGame.Core.Services
 {
     public class MessageService
     {

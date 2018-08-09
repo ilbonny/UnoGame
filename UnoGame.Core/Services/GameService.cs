@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnoGame.Models;
+using UnoGame.Core.Models;
 
-namespace UnoGame.Services
+namespace UnoGame.Core.Services
 {
     public interface IGameService
     {

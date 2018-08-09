@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace UnoGame.Models
+namespace UnoGame.Core.Models
 {
     public class CardDeck 
     {

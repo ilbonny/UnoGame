@@ -5,6 +5,10 @@ VisualStudioVersion = 15.0.27703.2018
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoGame", "UnoGame\UnoGame.csproj", "{11DFBF1B-1DF3-46FB-B9D0-4DEA970D0773}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoGame.Tests", "UnoGame.Tests\UnoGame.Tests.csproj", "{4E133586-40DF-410E-917E-FF82B1F3D3CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnoGame.Core", "UnoGame.Core\UnoGame.Core.csproj", "{C526D78E-91FF-43FB-8ED2-C6A85698E9A1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{11DFBF1B-1DF3-46FB-B9D0-4DEA970D0773}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11DFBF1B-1DF3-46FB-B9D0-4DEA970D0773}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11DFBF1B-1DF3-46FB-B9D0-4DEA970D0773}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4E133586-40DF-410E-917E-FF82B1F3D3CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4E133586-40DF-410E-917E-FF82B1F3D3CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4E133586-40DF-410E-917E-FF82B1F3D3CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4E133586-40DF-410E-917E-FF82B1F3D3CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C526D78E-91FF-43FB-8ED2-C6A85698E9A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C526D78E-91FF-43FB-8ED2-C6A85698E9A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C526D78E-91FF-43FB-8ED2-C6A85698E9A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C526D78E-91FF-43FB-8ED2-C6A85698E9A1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

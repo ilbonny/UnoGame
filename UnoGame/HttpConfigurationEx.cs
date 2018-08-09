@@ -3,7 +3,7 @@ using System.Web.Http;
 using DryIoc;
 using DryIoc.SignalR;
 using DryIoc.WebApi;
-using UnoGame.Services;
+using UnoGame.Core.Services;
 
 namespace UnoGame
 {
@@ -25,7 +25,7 @@ namespace UnoGame
             container.Register<IRuleService, RuleService>(Reuse.Singleton);
             container.Register<IUserService, UserService>(Reuse.Singleton);
 
-            var hubAssemblies = new[] { Assembly.GetExecutingAssembly() };
+            var hubAssemblies = new[] { Assembly.GetAssembly(typeof(GameHub)) };
             container.WithSignalR(hubAssemblies);
             container.WithWebApi(config);
             return config;

@@ -1,4 +1,4 @@
-﻿namespace UnoGame
+﻿namespace UnoGame.Core.Models
 {
     public enum CardColor
     {
