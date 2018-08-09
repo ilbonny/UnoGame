@@ -20,6 +20,9 @@
                     <button type="submit" class="btn btn-primary" v-on:click="addPlayer()">Submit</button>
                 </div>
             </div>
+            <div class="row" style="margin-bottom: 20px">
+                <button type="submit" class="btn btn-info" v-on:click="addAutomaticPlayer()">Add Automatic Player</button>
+            </div>
             <div v-show="!isNewUser" class="row" style="margin-bottom: 20px; color: green">
                 <h3>Waiting for players...</h3>
             </div>
@@ -82,26 +85,40 @@
 
         methods: {
             addPlayer: function () {
-                axios.post("/api/users/add",
-                    {
-                        username: this.username,
-                        connectionHubId : $.connection.hub.id
-                    })
-                    .then((e) => {
-                        this.user = e.data;
-                        this.isNewUser = false;
-                        this.playerHub.server.reloadUsers();
-                        this.playerHub.server.startGame();
-                    })
-                    .catch(e => {
-                        console.log(e);
-                    });
+                var user ={
+                    username: this.username,
+                    connectionHubId: $.connection.hub.id,
+                    isAutomatic: false
+                };
+                this.callAddUser(user);
+                this.isNewUser = false;
             },
             refreshPlayers: function (users) {
                 this.players = users;
             },
             startNewGame: function(id) {
                 window.location.href = "/game.html?game=" + id + "&player=" + this.user.Id;
+            },
+            addAutomaticPlayer: function ()
+            {
+                var user ={
+                    username: "Player_" + Math.random().toString(36).substr(2, 9),
+                    connectionHubId :'',
+                    isAutomatic: true
+                };
+
+                this.callAddUser(user);
+            },
+            callAddUser: function(user) {
+                axios.post("/api/users/add", user)
+                    .then((e) => {
+                        this.user = e.data;
+                        this.playerHub.server.reloadUsers();
+                        this.playerHub.server.startGame();
+                    })
+                    .catch(e => {
+                        console.log(e);
+                    });
             }
         }
         

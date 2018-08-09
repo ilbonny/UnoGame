@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using UnoGame.Core.Models;
 
 namespace UnoGame.Core.Services
@@ -12,6 +13,7 @@ namespace UnoGame.Core.Services
         void PlayerTurnExecute(PlayerTurn turn);
         void DrawDeck(Guid gameId);
         Game GetGame(Guid gameId, Guid userId);
+        bool CheckAutomaticPlayer(Game game);
     }
 
     public class GameService : IGameService
@@ -21,14 +23,18 @@ namespace UnoGame.Core.Services
         private readonly ICardDeskService _cardDeskService;
         private readonly IPlayerService _playerService;
         private readonly IRuleService _ruleService;
+        private readonly IAutomaticPlayerService _automaticPlayerService;
 
         public List<Game> Games { get; set; }
 
-        public GameService(ICardDeskService cardDeskService, IPlayerService playerService, IRuleService ruleService)
+        public GameService(ICardDeskService cardDeskService, IPlayerService playerService, IRuleService ruleService
+            , IAutomaticPlayerService automaticPlayerService)
         {
             _cardDeskService = cardDeskService;
             _playerService = playerService;
             _ruleService = ruleService;
+            _automaticPlayerService = automaticPlayerService;
+            
             Games = new List<Game>();
         }
 
@@ -63,6 +69,32 @@ namespace UnoGame.Core.Services
             if (game == null) return;
 
             _ruleService.Apply(turn, game);
+        }
+
+        public bool CheckAutomaticPlayer(Game game)
+        {
+            if (!game.CurrentPlayer.User.IsAutomatic) return false;
+
+            Thread.Sleep(3000);
+
+            var cardToDiscard = _automaticPlayerService.GetCardToDiscard(game.CurrentPlayer.Hand, game.DiscardPile.Last());
+
+            if (cardToDiscard != null)
+            {
+                var turn = new PlayerTurn
+                {
+                    Card = cardToDiscard,
+                    UserId = game.CurrentPlayer.User.Id,
+                    GameId = game.Id,
+                    Num = game.CurrentPlayer.Position
+                };
+
+                _ruleService.Apply(turn, game);
+            }
+            else
+                DrawDeck(game.Id);
+
+            return true;
         }
 
         public void DrawDeck(Guid gameId)

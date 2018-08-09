@@ -19,7 +19,7 @@ namespace UnoGame.Core.Services
             Users = new List<User>();
         }
 
-        public User Add(User  user)
+        public User Add(User user)
         {
             user.Id = Guid.NewGuid();
             Users.Add(user);

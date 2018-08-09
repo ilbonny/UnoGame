@@ -29,12 +29,16 @@ namespace UnoGame.Core.Services
         {
             if (_userService.Users.Count < NumPlayer) return;
 
-            var fourUsers = _userService.Users.Take(NumPlayer).ToList();
+            var fourUsers = _userService.Users.OrderByDescending(c=>!c.IsAutomatic)
+                .Take(NumPlayer).ToList();
 
             var game = _gameService.Start(fourUsers);
 
-            foreach (var user in fourUsers)
+            foreach (var user in fourUsers.Where(c=> !string.IsNullOrEmpty(c.ConnectionHubId)))
                 Clients.Client(user.ConnectionHubId).startGame(game.Id);
+
+            foreach (var fourUser in fourUsers)
+                _userService.Users.Remove(fourUser);
         }
     }
 }

@@ -36,11 +36,14 @@ namespace UnoGame.Core.Services
             var game = _gameService.Games.FirstOrDefault(x => x.Id == gameId);
             if (game == null) return;
 
-            foreach (var player in game.Players)
+            foreach (var player in game.Players.Where(c=>!c.User.IsAutomatic))
             {
                 var gameForUser = _gameService.GetGame(gameId, player.User.Id);
                 Clients.Client(player.User.ConnectionHubId).reloadGame(gameForUser);
             }
+
+            var isAutomatic = _gameService.CheckAutomaticPlayer(game);
+            if(isAutomatic) ReloadGame(gameId);
         }
     }
 }

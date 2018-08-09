@@ -4,7 +4,12 @@ using UnoGame.Core.Models;
 
 namespace UnoGame.Core.Services
 {
-    public class AutomaticPlayerService
+    public interface IAutomaticPlayerService
+    {
+        Card GetCardToDiscard(List<Card> handCards, Card comparisonCard);
+    }
+
+    public class AutomaticPlayerService : IAutomaticPlayerService
     {
         private List<Card> _handCards;
         private Card _comparisonCard;
@@ -14,7 +19,8 @@ namespace UnoGame.Core.Services
         {
             _handCards = handCards;
             _comparisonCard = comparisonCard;
-            
+            _cardSelected = null;
+
             CanAddCardSameColor()
                 .CanAddCardSameValue()
                 .CanAddCardWild()

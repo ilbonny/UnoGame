@@ -7,5 +7,6 @@ namespace UnoGame.Core.Models
         public Guid Id { get; set; }
         public string ConnectionHubId { get; set; }
         public string UserName { get; set; }
+        public bool IsAutomatic { get; set; }
     }
 }
