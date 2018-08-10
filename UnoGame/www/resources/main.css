@@ -10,6 +10,41 @@
     position: fixed;
 }
 
+#topdiv div {
+    position: relative;
+    margin-left: 40px;
+}
+
+#topdiv .cardDivContainerHorizontal {
+    position: absolute;
+}
+
+#bottomdiv {
+    bottom: 0%;
+    left: 50%;
+    width: 700px;
+    height: 200px;
+    margin-bottom: 10px;
+    margin-left: -350px;
+    border: 1px solid #ccc;
+    background-color: #f3f3f3;
+    position: fixed;
+}
+
+ #bottomdiv div {
+     position: relative;
+     margin-left: 40px;
+ }
+
+ #bottomdiv .cardDivContainerHorizontal {
+     position: absolute;
+ }
+
+.cardDivContainerHorizontal {
+    display: inline-block;
+    width: 50px
+}
+
 #leftdiv {
     top: 50%;
     left: 20%;
@@ -22,6 +57,15 @@
     position: fixed;
 }
 
+#leftdiv div {
+    position: relative;
+    margin-top: 40px;
+}
+
+    #leftdiv .cardDivContainerVertical {
+        position: absolute;
+    }
+
 #rightdiv {
     top: 50%;
     right: 20%;
@@ -33,17 +77,20 @@
     position: fixed;
 }
 
-#bottomdiv {
-    bottom: 0%;
-    left: 50%;
-    width: 700px;
-    height: 200px;
-    margin-bottom: 10px; 
-    margin-left: -350px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
-    position: fixed;
+#rightdiv div {
+    position: relative;
+    margin-top: 40px;
 }
+
+    #rightdiv .cardDivContainerVertical {
+        position: absolute;
+    }
+
+.cardDivContainerVertical {
+    display: inline-block;
+    height: 40px
+}
+
 
 #middlediv {
     top: 50%;
@@ -67,15 +114,9 @@
     transform: rotate(90deg);
 }
 
-.cardDivContainerVertical {
-    display: inline-block;
-    height: 70px
-}
 
-.cardDivContainerHorizontal {
-    display: inline-block;
-    width: 70px
-}
+
+
 
 .cardDivContainerMiddle {
     display: inline-block;
@@ -86,7 +127,6 @@
     display: flow-root;
     margin-top: 10px;
     margin-left: 50px;
-    transform: rotate(-90deg);
 }
 
 .cardMiddleHorizontal {
@@ -110,8 +150,8 @@
     margin-left: -100px;
     width: 0;
     width: 200px;
-    background: none; 
-} 
+    background: none;
+}
 
 .cardDivContainerMiddle {
     position: absolute;
@@ -122,7 +162,7 @@
     cursor: pointer;
 }
 
-#topdiv, #leftdiv, #rightdiv, #bottomdiv, #cubediv {
+ #leftdiv, #rightdiv, #cubediv {
     overflow: overlay;
 }
 
@@ -134,9 +174,9 @@
     position: fixed;
 }
 
-#deckdiv img {
-    width: 150px;
-}
+    #deckdiv img {
+        width: 150px;
+    }
 
 #cubediv {
     top: 45%;
@@ -148,25 +188,9 @@
     height: 120px;
 }
 
-#cubediv img {
-    width: 50px;
-}
-
-#bottomdiv {
-    width: 700px;
-    height: 200px;
-    overflow: hidden;
-    margin-left: -350px;
-}
-
-#bottomdiv div{
-    position: relative;
-    margin-left: 20px;
-}
-
-#bottomdiv .cardDivContainerHorizontal{
-    position: absolute;
-}
+    #cubediv img {
+        width: 50px;
+    }
 
 #unobuttondiv {
     bottom: 25%;
@@ -200,8 +224,13 @@
 }
 
 @keyframes fadein {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 #arrowsdiv {
@@ -218,8 +247,13 @@
 }
 
 @keyframes moveToCenter {
-    0%   {margin-top: 286px;}
-    100% {margin-top: 20px;}
+    0% {
+        margin-top: 286px;
+    }
+
+    100% {
+        margin-top: 20px;
+    }
 }
 
 
@@ -229,43 +263,37 @@
 }
 
 .rightRotation {
-    animation-name: rightRotate; 
-    animation-duration: 8s; 
+    animation-name: rightRotate;
+    animation-duration: 8s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
 .leftRotation {
-    animation-name: leftRotate; 
-    animation-duration: 8s; 
+    animation-name: leftRotate;
+    animation-duration: 8s;
     animation-iteration-count: infinite;
     animation-timing-function: linear;
 }
 
 @keyframes rightRotate {
-    from {transform: rotate(0);}
-    to {transform: rotate(360deg);}
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
 }
 
 @keyframes leftRotate {
-    from {transform: rotate(360deg);}
-    to {transform: rotate(0);}
-}
+    from {
+        transform: rotate(360deg);
+    }
 
-.cardDivContainerVertical {
-    margin-top: -35px;
-}
-
-.cardDivContainerVertical:first-child {
-    margin-top: 0px;
-}
-
-#topdiv .cardDivContainerHorizontal {
-    margin-left: -35px; 
-}
-
-#topdiv .cardDivContainerHorizontal:first-child {
-    margin-left: 0px; 
+    to {
+        transform: rotate(0);
+    }
 }
 
 .playerName {

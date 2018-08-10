@@ -27,13 +27,17 @@
             <button type="button" class="btn btn-outline-secondary" v-on:click="challengeDrawFour(false)">No</button>
         </div>
         <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(player4.Position)">
-            <div v-for="card in player4.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player4.Position,card)"></div>
+            <div v-for="(card,index) in player4.Hand" class="cardDivContainerVertical">
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" 
+                     v-bind:style="setTransformCardLeft(index, player4.Hand.length)"
+                     v-on:click="selectCard(player4.Position,card)"></div>
             </div>
         </div>
         <div v-if="player3" id="topdiv" v-bind:style="setBgStylePlayer(player3.Position)">
-            <div v-for="card in player3.Hand" class="cardDivContainerHorizontal">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player3.Position,card)"></div>
+            <div v-for="(card,index) in player3.Hand" class="cardDivContainerHorizontal">
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"
+                     v-bind:style="setTransformCardTop(index, player3.Hand.length)"
+                     v-on:click="selectCard(player3.Position,card)"></div>
             </div>
         </div>
 
@@ -48,13 +52,16 @@
         </div>
 
         <div v-if="player2" id="rightdiv" v-bind:style="setBgStylePlayer(player2.Position)">
-            <div v-for="card in player2.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]" v-on:click="selectCard(player2.Position,card)"></div>
+            <div v-for="(card, index) in player2.Hand" class="cardDivContainerVertical">
+                <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]"
+                     v-bind:style="setTransformCardRight(index, player2.Hand.length)"
+                     v-on:click="selectCard(player2.Position,card)"></div>
             </div>
         </div>
         <div v-if="player1" id="bottomdiv" v-bind:style="setBgStylePlayer(player1.Position)">
             <div v-for="(card, index) in player1.Hand" class="cardDivContainerHorizontal">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setTransformCard(index, player1.Hand.length)"
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"
+                     v-bind:style="setTransformCardBottom(index, player1.Hand.length)"
                      v-on:click="selectCard(player1.Position,card)"></div>
             </div>
         </div>
@@ -194,20 +201,6 @@
                 this.arrowRotation = this.game.IsReverse ? "rightRotation" : "leftRotation";
 
             },
-            setTransformCard(index, count) {
-                index = index + 1;
-
-                if (!isOdd(count)) {
-                    count = count + 1;
-                }
-
-                var middle = count / 2;
-                var startLeft = middle;
-                var left = index * 50 - startLeft * 10;
-                var top = Math.abs(index - middle) * 5;
-
-                return "transform: rotate(" + (index - middle) * 5 + "deg); left:" + left + "px; top:" + top + "px";
-            },
             challengeDrawFour: function (isChallenge) {
                 this.showDisputeButtons = false;
                 this.playerTurnExecute(this.playerNum, this.currentCard, isChallenge);
@@ -216,7 +209,24 @@
                 this.game = game;
                 this.setPlayers();
                 this.setArrowsCurrentColor();
-            }
+            },
+            setTransformCardBottom(index, count) {
+                var result = TransformCard(index, count, 0);
+                return "transform: rotate(" + result.deg + "deg); left:" + result.start + "px; top:" + result.space + "px";
+            },
+            setTransformCardRight(index, count) {
+                var result = TransformCard(index, count, 90);
+                return "transform: rotate(" + result.deg * -1 + "deg); left:" + result.space + "px; top:" + result.start + "px";
+            },
+            setTransformCardTop(index, count) {
+                var result = TransformCard(index, count, 0);
+                return "transform: rotate(" + result.deg * -1 + "deg); left:" + result.start + "px; bottom:" + result.space + "px";
+            },
+            setTransformCardLeft(index, count) {
+
+                var result = TransformCard(index, count, 90);
+                return "transform: rotate(" + result.deg + "deg); right:" + result.space + "px; top:" + result.start + "px";
+           }
         }
     });
 
@@ -224,25 +234,20 @@
         return num % 2;
     }
 
-    function AdjustColors(color) {
-        var setcolor = "";
+    function TransformCard(index, count, angle) {
+        index = index + 1;
 
-        switch (color.toLowerCase()) {
-            case "red":
-                setcolor = "#FF5555";
-                break;
-            case "yellow":
-                setcolor = "#FFAA00";
-                break;
-            case "green":
-                setcolor = "#55AA55";
-                break;
-            case "blue":
-                setcolor = "#5555FF";
-                break;
+        if (!isOdd(count)) {
+            count = count + 1;
         }
 
-        return setcolor;
+        var middle = count / 2;
+        var start = index * 50 - middle * 10;
+        var space = Math.abs(index - middle) * 5;
+        var deg = (index - middle) * 5 + angle;
+
+        return { start: start, space: space, deg : deg } 
     }
+
 </script>
 
