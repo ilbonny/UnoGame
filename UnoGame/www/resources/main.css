@@ -5,8 +5,8 @@
     height: 200px;
     margin-top: 20px;
     margin-left: -350px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
+    /*border: 1px solid #ccc;
+    background-color: #f3f3f3;*/
     position: fixed;
 }
 
@@ -26,8 +26,8 @@
     height: 200px;
     margin-bottom: 10px;
     margin-left: -350px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
+    /*border: 1px solid #ccc;
+    background-color: #f3f3f3;*/
     position: fixed;
 }
 
@@ -47,13 +47,13 @@
 
 #leftdiv {
     top: 50%;
-    left: 20%;
+    left: 10%;
     width: 200px;
     height: 700px;
     margin-top: -350px;
     margin-left: 0px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
+    /*border: 1px solid #ccc;
+    background-color: #f3f3f3;*/
     position: fixed;
 }
 
@@ -68,12 +68,12 @@
 
 #rightdiv {
     top: 50%;
-    right: 20%;
+    right: 10%;
     width: 200px;
     height: 700px;
     margin-top: -350px;
-    border: 1px solid #ccc;
-    background-color: #f3f3f3;
+    /*border: 1px solid #ccc;
+    background-color: #f3f3f3;*/
     position: fixed;
 }
 
@@ -113,10 +113,6 @@
     margin-left: 50px;
     transform: rotate(90deg);
 }
-
-
-
-
 
 .cardDivContainerMiddle {
     display: inline-block;
@@ -160,10 +156,6 @@
 
 .cardDivContainerVertical, .cardDivContainerHorizontal, #deckdiv, #unobuttondiv {
     cursor: pointer;
-}
-
- #leftdiv, #rightdiv, #cubediv {
-    overflow: overlay;
 }
 
 #deckdiv {
@@ -246,22 +238,6 @@
     height: 300px;
 }
 
-@keyframes moveToCenter {
-    0% {
-        margin-top: 286px;
-    }
-
-    100% {
-        margin-top: 20px;
-    }
-}
-
-
-.moveToCenter {
-    animation-name: moveToCenter;
-    animation-duration: 2s;
-}
-
 .rightRotation {
     animation-name: rightRotate;
     animation-duration: 8s;
@@ -297,6 +273,135 @@
 }
 
 .playerName {
-    color: black;
+    color: white;
     font-weight: bold;
+    margin-top: -40px;
+    margin-left: 20px;
 }
+
+#playerBottom {
+    bottom: 0%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    margin-bottom: 20px;
+    margin-left: -420px;
+    position: fixed;
+}
+
+#playerTop {
+    top: 0%;
+    left: 50%;
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+    margin-left: -420px;
+    position: fixed;
+}
+
+#playerLeft {
+    top: 50%;
+    left: 1%;
+    width: 150px;
+    height: 150px;
+    margin-top: -120px;
+    position: fixed;
+}
+
+#playerRight {
+    top: 50%;
+    right: 1%;
+    width: 150px;
+    height: 150px;
+    margin-top: -120px;
+    position: fixed;
+}
+
+@keyframes bottomToCenter {
+    0% {
+        transform : translateY(300px)
+    }
+
+    100% {
+        transform : translateY(0px)
+    }
+}
+
+.bottomToCenter {
+    animation-name: bottomToCenter;
+    animation-duration: 2s;
+}
+
+@keyframes topToCenter {
+    0% {
+        transform : translateY(-300px)
+    }
+
+    100% {
+         transform : translateY(0px)
+    }
+}
+
+.topToCenter {
+    animation-name: topToCenter;
+    animation-duration: 2s;
+}
+
+@keyframes leftToCenter {
+    0% {
+        transform : translateX(-300px)
+    }
+
+    100% {
+        transform : translateY(0px)
+    }
+}
+
+.leftToCenter {
+    animation-name: leftToCenter;
+    animation-duration: 2s;
+}
+
+@keyframes rightToCenter {
+    0% {
+        transform: translateX(300px)
+    }
+
+    100% {
+        transform: translateY(0px)
+    }
+}
+
+.rightToCenter {
+    animation-name: rightToCenter;
+    animation-duration: 2s;
+}
+
+#bounce {
+    top: 50%;
+    left: 50%;
+    margin-top: -100px;
+    margin-left: -140px;
+    position: fixed;
+}
+
+.bounce-enter-active {
+    animation: bounce-in .5s;
+}
+.bounce-leave-active {
+    animation: bounce-in .5s reverse;
+}
+@keyframes bounce-in {
+    0% {
+        opacity: 0
+    }
+
+    50% {
+        opacity: 1
+    }
+
+    100% {
+        opacity: 0
+    }
+}
+

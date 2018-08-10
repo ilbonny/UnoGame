@@ -12,5 +12,7 @@ namespace UnoGame.Core.Models
         public CardValue Value { get; set; }
 
         public int Score { get; set; }
+
+        public int PlayerDiscard { get; set; }
     }
 }

@@ -13,6 +13,8 @@ namespace UnoGame.Core.Models
         public Player CurrentPlayer { get; set; }
         public string Message { get; set; }
         public bool IsReverse { get; set; }
+        public Player PlayerWin { get; set; }
+        public bool IsFadeUno { get; set; }
 
         public Game()
         {

@@ -26,45 +26,68 @@
             <button type="button" class="btn btn-outline-primary" v-on:click="challengeDrawFour(true)">Yes</button>
             <button type="button" class="btn btn-outline-secondary" v-on:click="challengeDrawFour(false)">No</button>
         </div>
-        <div v-if="player4" id="leftdiv" v-bind:style="setBgStylePlayer(player4.Position)">
+        <div v-if="player4" id="leftdiv">
             <div v-for="(card,index) in player4.Hand" class="cardDivContainerVertical">
-                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]" 
+                <div class="cardVerticalLeft" v-bind:class="[card.Value + '_' + card.Color]"
                      v-bind:style="setTransformCardLeft(index, player4.Hand.length)"
                      v-on:click="selectCard(player4.Position,card)"></div>
             </div>
         </div>
-        <div v-if="player3" id="topdiv" v-bind:style="setBgStylePlayer(player3.Position)">
+        <div v-if="player3" id="topdiv">
             <div v-for="(card,index) in player3.Hand" class="cardDivContainerHorizontal">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"
                      v-bind:style="setTransformCardTop(index, player3.Hand.length)"
                      v-on:click="selectCard(player3.Position,card)"></div>
             </div>
         </div>
-
         <div id="arrowsdiv">
             <img v-bind:src="arrowurl" v-bind:class="arrowRotation" id="arrowsimg" />
         </div>
-
         <div v-if="game" id="middlediv">
             <div v-for="(card,index) in game.DiscardPile" class="cardDivContainerMiddle">
-                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setMiddleCard(index)"></div>
+                <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]" v-bind:style="setMiddleCard(card,index)"></div>
             </div>
         </div>
 
-        <div v-if="player2" id="rightdiv" v-bind:style="setBgStylePlayer(player2.Position)">
+        <div v-if="player2" id="rightdiv">
             <div v-for="(card, index) in player2.Hand" class="cardDivContainerVertical">
                 <div class="cardVerticalRight" v-bind:class="[card.Value + '_' + card.Color]"
                      v-bind:style="setTransformCardRight(index, player2.Hand.length)"
                      v-on:click="selectCard(player2.Position,card)"></div>
             </div>
         </div>
-        <div v-if="player1" id="bottomdiv" v-bind:style="setBgStylePlayer(player1.Position)">
+
+        <div v-if="player1" id="bottomdiv">
             <div v-for="(card, index) in player1.Hand" class="cardDivContainerHorizontal">
                 <div class="cardHorizontal" v-bind:class="[card.Value + '_' + card.Color]"
                      v-bind:style="setTransformCardBottom(index, player1.Hand.length)"
                      v-on:click="selectCard(player1.Position,card)"></div>
             </div>
         </div>
+        <div id="playerBottom" v-bind:style="setBgStylePlayer(player1.Position)">
+            <img src="resources/Player.png" height="150" />
+            <div class="playerName">{{player1.User.UserName}}</div>
+        </div>
+        <div id="playerRight" v-bind:style="setBgStylePlayer(player2.Position)">
+            <img src="resources/Player.png" height="150" />
+            <div class="playerName">{{player2.User.UserName}}</div>
+        </div>
+        <div id="playerTop" v-bind:style="setBgStylePlayer(player3.Position)">
+            <img src="resources/Player.png" height="150" />
+            <div class="playerName">{{player3.User.UserName}}</div>
+        </div>
+        <div id="playerLeft" v-bind:style="setBgStylePlayer(player4.Position)">
+            <img src="resources/Player.png" height="150" />
+            <div class="playerName">{{player4.User.UserName}}</div>
+        </div>
+        <!--<transition name="fadeuno">
+            <img v-if="true" src="resources/uno.png"  />
+        </transition>-->
+        
+        <!--<transition name="bounce">
+            <img v-if="show" src="resources/uno.png" />
+        </transition>-->
+
     </div>
 </body>
 </html>
@@ -101,7 +124,8 @@
             showDisputeButtons: false,
             arrowurl: "",
             arrowRotation: "",
-            gameHub: {}
+            gameHub: {},
+            show: true
         },
         created() {
 
@@ -123,11 +147,14 @@
 
         methods: {
             setBgStylePlayer: function (num) {
+
                 return this.game.CurrentPlayer != null && this.game.CurrentPlayer.Position === num
-                    ? 'background-color:green'
+                    ? 'background-color:lightgreen'
                     : '';
             },
             selectCard: function (playerNum, card) {
+
+                this.show = !this.show;
 
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;
@@ -141,13 +168,27 @@
 
                 this.playerTurnExecute(playerNum, card, false);
             },
-            setMiddleCard: function (index) {
+            setMiddleCard: function (card, index) {
                 if (index > 0) {
                     var deg = (((index * 10) + index) * 10) % 360;
 
-                    return "transform: rotate(" +
-                        deg +
-                        "deg); animation-name: moveToCenter; animation-duration: 0.7s;";
+                    var animation = '';
+                    switch (card.PlayerDiscard) {
+                        case this.player1.Position:
+                            animation = 'bottomToCenter';
+                            break;
+                        case this.player2.Position:
+                            animation = 'rightToCenter';
+                            break;
+                        case this.player3.Position:
+                            animation = 'topToCenter';
+                            break;
+                        case this.player4.Position:
+                            animation = 'leftToCenter';
+                            break;
+                    }
+                    return "transform: rotate(" + deg + "deg); " +
+                        "animation-name: " + animation + "; animation-duration: 0.7s;";
                 }
             },
             drawDeck: function () {

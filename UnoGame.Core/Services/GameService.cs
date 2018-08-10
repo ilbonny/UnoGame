@@ -49,7 +49,7 @@ namespace UnoGame.Core.Services
             InitialCarsToPlayer(game);
             AddFirstDiscardPile(game);
 
-            game.Message = MessageService.Show(MessageService.StartGame, game.CurrentPlayer.Position.ToString());
+            game.Message = MessageService.Show(MessageService.StartGame, game.CurrentPlayer.User.UserName);
             Games.Add(game);
 
             return game;
@@ -104,7 +104,7 @@ namespace UnoGame.Core.Services
 
             var listDiscard = game.DiscardPile.Skip(1).Take(game.DiscardPile.Count - 1);
 
-            if (game.DrawPile.Count == 1)
+            if (game.DrawPile.Count < 5)
             {
                 game.DrawPile.AddRange(listDiscard);
                 game.DrawPile = _cardDeskService.Shuffle(game.DrawPile);
@@ -118,7 +118,7 @@ namespace UnoGame.Core.Services
             game.DrawPile.RemoveAt(0);
 
             _ruleService.SetCurrentPlayer(game, 1);
-            game.Message = MessageService.Show(MessageService.DrawDeck, game.CurrentPlayer.Position.ToString());
+            game.Message = MessageService.Show(MessageService.DrawDeck, game.CurrentPlayer.User.UserName);
         }
 
         public List<Card> OrderTheCards(List<Card> cards)
@@ -165,7 +165,8 @@ namespace UnoGame.Core.Services
                 Players = new List<Player>(),
                 CurrentTurn = game.CurrentTurn,
                 Message =  game.Message,
-                IsReverse = game.IsReverse
+                IsReverse = game.IsReverse,
+                IsFadeUno = true
             };
 
             var player = game.Players.FirstOrDefault(x=>x.User.Id == userId);

@@ -47,7 +47,7 @@ namespace UnoGame.Core.Services
             {
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 1);
-                game.Message = MessageService.Show(MessageService.PlayPlayer, game.CurrentPlayer.Position.ToString());
+                game.Message = MessageService.Show(MessageService.PlayPlayer, game.CurrentPlayer.User.UserName);
             }
         }
 
@@ -76,7 +76,7 @@ namespace UnoGame.Core.Services
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
 
-                game.Message = MessageService.Show(MessageService.SkipTurn, game.CurrentPlayer.Position.ToString());
+                game.Message = MessageService.Show(MessageService.SkipTurn, game.CurrentPlayer.User.UserName);
             }
         }
 
@@ -90,7 +90,7 @@ namespace UnoGame.Core.Services
                 RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValueAndColor(turn));
                 SetCurrentPlayer(game, 2);
 
-                game.Message = MessageService.Show(MessageService.DrawTwo, game.CurrentPlayer.Position.ToString());
+                game.Message = MessageService.Show(MessageService.DrawTwo, game.CurrentPlayer.User.UserName);
             }
         }
 
@@ -113,12 +113,12 @@ namespace UnoGame.Core.Services
             if (find == null)
             {
                 DrawFour(turn, game, 6, 2);
-                game.Message = MessageService.Show(MessageService.DrawFourFailed, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+                game.Message = MessageService.Show(MessageService.DrawFourFailed, turn.Card.Color.ToString(), game.CurrentPlayer.User.UserName);
             }
             else
             {
                 DrawFourSuccess(turn, game);
-                game.Message = MessageService.Show(MessageService.DrawFourSuccess, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+                game.Message = MessageService.Show(MessageService.DrawFourSuccess, turn.Card.Color.ToString(), game.CurrentPlayer.User.UserName);
             }
         }
 
@@ -145,7 +145,7 @@ namespace UnoGame.Core.Services
             RemoveToHandAndAddDiscard(turn, game, PredicateFindCardValue(turn));
             SetCurrentPlayer(game, 1);
 
-            game.Message = MessageService.Show(MessageService.Wild, turn.Card.Color.ToString(), game.CurrentPlayer.Position.ToString());
+            game.Message = MessageService.Show(MessageService.Wild, turn.Card.Color.ToString(), game.CurrentPlayer.User.UserName);
         }
 
         public void SetCurrentPlayer(Game game, int next)
@@ -164,8 +164,15 @@ namespace UnoGame.Core.Services
             var cardHandPlayer = game.CurrentPlayer.Hand.Find(predicate);
             game.CurrentPlayer.Hand.Remove(cardHandPlayer);
 
+            turn.Card.PlayerDiscard = game.CurrentPlayer.Position;
             game.DiscardPile.Add(turn.Card);
             game.CurrentTurn.Card = turn.Card;
+
+            if (game.CurrentPlayer.Hand.Count == 1)
+                game.IsFadeUno = true;
+
+            if (game.CurrentPlayer.Hand.Count == 0)
+                game.PlayerWin = game.CurrentPlayer;
         }
 
         private void AddCardToNextPlayer(Game game, int numCard)
