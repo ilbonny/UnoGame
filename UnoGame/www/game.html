@@ -80,14 +80,6 @@
             <img src="resources/Player.png" height="150" />
             <div class="playerName">{{player4.User.UserName}}</div>
         </div>
-        <!--<transition name="fadeuno">
-            <img v-if="true" src="resources/uno.png"  />
-        </transition>-->
-        
-        <!--<transition name="bounce">
-            <img v-if="show" src="resources/uno.png" />
-        </transition>-->
-
     </div>
 </body>
 </html>
@@ -124,8 +116,8 @@
             showDisputeButtons: false,
             arrowurl: "",
             arrowRotation: "",
-            gameHub: {},
-            show: true
+            gameHub: {}
+           
         },
         created() {
 
@@ -153,8 +145,6 @@
                     : '';
             },
             selectCard: function (playerNum, card) {
-
-                this.show = !this.show;
 
                 if (this.game.CurrentPlayer.Position !== playerNum)
                     return;

@@ -40,12 +40,18 @@
                     </tbody>
                 </table>
             </div>
+
+            <button type="submit" class="btn btn-info" v-on:click="showUno()">Show</button>
+            <transition name="bounce">
+                <img v-if="show" src="resources/uno.png" />
+            </transition>
         </div>
     </div>
 </body>
 </html>
 
 <link rel="stylesheet" type="text/css" href="resources/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="resources/main.css">
 <script src="vendor/moment.min.js"></script>
 <script src="vendor/vue.js"></script>
 <script src="vendor/vue-router.js"></script>
@@ -65,10 +71,10 @@
             players: [],
             playerHub: {},
             isNewUser: true,
-            user: {}
+            user: {},
+            show: true
         },
         created() {
-
             var vm = this;
             this.playerHub = $.connection.playerHub;
 
@@ -82,7 +88,6 @@
 
             $.connection.hub.start();
         },
-
         methods: {
             addPlayer: function () {
                 var user ={
@@ -92,6 +97,8 @@
                 };
                 this.callAddUser(user);
                 this.isNewUser = false;
+                this.show = true;
+                
             },
             refreshPlayers: function (users) {
                 this.players = users;
@@ -119,6 +126,9 @@
                     .catch(e => {
                         console.log(e);
                     });
+            },
+            showUno: function() {
+                this.show = !this.show;
             }
         }
         
